@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html>
   
-<head>
-  <title>Squidink</title>
+<canvas id="myCanvas" width="200" height="100" style="border:1px solid black;">
+</canvas>
 
-  
-</head>
-<body>
-<h1>Squidink</h1>
-<p>Hello Welcome to Ink Zone</p>
+<script>
+const canvas = document.getElementById("myCanvas");
+const ctx = canvas.getContext("2d");
+ctx.fillStyle = "red";
+ctx.fillRect(0, 0, 150, 75);
+</script>
 
 </body>
 </html>
