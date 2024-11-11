@@ -38,38 +38,32 @@ var canvas, ctx, flag = false,
 
 
     function color(obj) {
-        inputcolor.addEventListener('input', (event) => {
+       inputcolor.addEventListener('input', (event) => {
        
        const colorValue = event.target.value;
        x = colorValue;
        }), false;
-        switch (obj.id) {
-            case "green":
-                x = "green";
-                break;
-            case "blue":
-                x = "blue";
-                break;
-            case "red":
-                x = "red";
-                break;
-            case "yellow":
-                x = "yellow";
-                break;
-            case "orange":
-                x = "orange";
-                break;
-            case "black":
-                x = colorValue;
-                break;
-            case "white":
-                x = "inputcolor";
-                break;
+
+
+       if(obj.id == "white")
+       {
+        x = "white";
+
+       }
+       if(obj.id == "colorDisplay")
+       {
+        x = color.value
+       }
         
-        }
         if (x == "white") y = 14;
         else y = 2;
     
+    }
+
+    function updateCustomColor() {
+        const colorPicker = document.getElementById("custom");
+        const colorDisplay = document.getElementById("colorDisplay");
+        colorDisplay.style.backgroundColor = colorPicker.value;
     }
     
     function draw() {
@@ -83,11 +77,10 @@ var canvas, ctx, flag = false,
     }
     
     function erase() {
-        var m = confirm("Want to clear");
-        if (m) {
+       
             ctx.clearRect(0, 0, w, h);
             document.getElementById("canvasimg").style.display = "none";
-        }
+    
     }
     
     function save() {
