@@ -68,14 +68,39 @@ var canvas, ctx, flag = false,
     
     function draw() {
         ctx.beginPath();
+        
         ctx.moveTo(prevX, prevY);
         ctx.lineTo(currX, currY);
         ctx.strokeStyle = x;
         ctx.lineWidth = y;
+        ctx.strokeSize = y;
+        ctx.stroke();
+        ctx.closePath();
+    }
+
+    function Caligraphy()
+    {
+        ctx.beginPath();
+        
+        for(let i = 0; i < 5; i++)
+        {
+            ctx.moveTo(prevX - i, prevY - i);
+            ctx.lineTo(currX - i, currY - i);
+        }
+        ctx.strokeStyle = x;
+        ctx.lineWidth = y;
+        ctx.strokeSize = y;
         ctx.stroke();
         ctx.closePath();
     }
     
+
+    function strokeSize()
+    {
+        const slider = document.getElementById("slider");
+        y = slider.value;
+    }
+
     function erase() {
        
             ctx.clearRect(0, 0, w, h);
@@ -103,7 +128,7 @@ var canvas, ctx, flag = false,
                 ctx.beginPath();
                 ctx.fillStyle = x;
                 ctx.fillRect(currX, currY, 2, 2);
-                ctx.closePath();
+                //ctx.closePath();
                 dot_flag = false;
             }
         }
