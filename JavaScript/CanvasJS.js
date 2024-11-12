@@ -11,28 +11,24 @@ var canvas, ctx, flag = false,
         
         function init() {
             canvas = document.getElementById('can');
-        ctx = canvas.getContext("2d");
-        w = canvas.width;
-        h = canvas.height;
+            ctx = canvas.getContext("2d");
+            HotKeys();
+            w = canvas.width;
+            h = canvas.height;
     
-        canvas.addEventListener("mousemove", function (e) {
-            findxy('move', e)
-        }, false);
-        canvas.addEventListener("mousedown", function (e) {
-            findxy('down', e)
-        }, false);
-        canvas.addEventListener("mouseup", function (e) {
-            findxy('up', e)
-        }, false);
-        canvas.addEventListener("mouseout", function (e) {
-            findxy('out', e)
-        }, false);
-
-   
-
-        
-        
-    }
+            canvas.addEventListener("mousemove", function (e) {
+                findxy('move', e)
+            }, false);
+            canvas.addEventListener("mousedown", function (e) {
+                findxy('down', e)
+            }, false);
+            canvas.addEventListener("mouseup", function (e) {
+                findxy('up', e)
+            }, false);
+            canvas.addEventListener("mouseout", function (e) {
+                findxy('out', e)
+            }, false);
+        }
     
 
 
@@ -144,4 +140,32 @@ var canvas, ctx, flag = false,
                 draw();
             }
         }
+    }
+    function HotKeys() {
+
+        document.addEventListener('keydown', function (event) {
+            if (event.ctrlKey && event.key === 'y') {
+    
+                // Prevent the default browser save action
+    
+                event.preventDefault();
+    
+                // Do something when Ctrl+S is pressed
+    
+                console.log('Ctrl+Y pressed!');
+            }
+        });
+    
+        document.addEventListener('keydown', function (event) {
+            if (event.ctrlKey && event.key === 'z') {
+    
+                // Prevent the default browser save action
+    
+                event.preventDefault();
+    
+                // Do something when Ctrl+S is pressed
+    
+                console.log('Ctrl+Z pressed!');
+            }
+        });
     }
