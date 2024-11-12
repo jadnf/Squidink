@@ -10,11 +10,9 @@ var x = "black",
     y = 2;
 
 function init() {
-
-    HotKeys();
-
     canvas = document.getElementById('can');
     ctx = canvas.getContext("2d");
+    HotKeys();
     w = canvas.width;
     h = canvas.height;
 
@@ -41,30 +39,16 @@ function color(obj) {
         const colorValue = event.target.value;
         x = colorValue;
     }), false;
-    switch (obj.id) {
-        case "green":
-            x = "green";
-            break;
-        case "blue":
-            x = "blue";
-            break;
-        case "red":
-            x = "red";
-            break;
-        case "yellow":
-            x = "yellow";
-            break;
-        case "orange":
-            x = "orange";
-            break;
-        case "black":
-            x = colorValue;
-            break;
-        case "white":
-            x = "inputcolor";
-            break;
+
+
+    if (obj.id == "white") {
+        x = "white";
 
     }
+    if (obj.id == "colorDisplay") {
+        x = color.value
+    }
+
     if (x == "white") y = 14;
     else y = 2;
 
@@ -225,7 +209,6 @@ function findxy(res, e) {
         if (res == 'up' || res == "out") {
             flag = false;
         }
-
         if (res == 'move') {
             if (flag) {
                 prevX = currX;
@@ -236,34 +219,33 @@ function findxy(res, e) {
             }
         }
     }
-}
+    function HotKeys() {
 
+        document.addEventListener('keydown', function (event) {
+            if (event.ctrlKey && event.key === 'y') {
 
-function HotKeys() {
+                // Prevent the default browser save action
 
-    document.addEventListener('keydown', function (event) {
-        if (event.ctrlKey && event.key === 'y') {
+                event.preventDefault();
 
-            // Prevent the default browser save action
+                // Do something when Ctrl+S is pressed
 
-            event.preventDefault();
+                console.log('Ctrl+Y pressed!');
+            }
+        });
 
-            // Do something when Ctrl+S is pressed
+        document.addEventListener('keydown', function (event) {
+            if (event.ctrlKey && event.key === 'z') {
 
-            console.log('Ctrl+Y pressed!');
-        }
-    });
+                // Prevent the default browser save action
 
-    document.addEventListener('keydown', function (event) {
-        if (event.ctrlKey && event.key === 'z') {
+                event.preventDefault();
 
-            // Prevent the default browser save action
+                // Do something when Ctrl+S is pressed
 
-            event.preventDefault();
+                console.log('Ctrl+Z pressed!');
+            }
+        });
+    }
 
-            // Do something when Ctrl+S is pressed
-
-            console.log('Ctrl+Z pressed!');
-        }
-    });
 }
