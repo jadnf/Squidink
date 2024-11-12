@@ -10,6 +10,9 @@ var x = "black",
     y = 2;
 
 function init() {
+
+    HotKeys();
+
     canvas = document.getElementById('can');
     ctx = canvas.getContext("2d");
     w = canvas.width;
@@ -151,7 +154,9 @@ function findxy(res, e) {
             ctx.clearRect(0, 0, w, h);
             document.getElementById("canvasimg").style.display = "none";
         }
-        if (res == 'up' || res == "out") flag = false;
+        if (res == 'up' || res == "out") {
+                flag = false;
+            }
 
         if (res == 'move') {
             if (flag) {
@@ -163,21 +168,34 @@ function findxy(res, e) {
             }
         }
     }
-
-    function HotKeys() {
-        document.addEventListener('keydown', function (event) {
-            if (event.ctrlKey && event.key === 'z') {
+}
 
 
+function HotKeys() {
 
-                // Prevent the default browser save action
+    document.addEventListener('keydown', function (event) {
+        if (event.ctrlKey && event.key === 'y') {
 
-                event.preventDefault();
+            // Prevent the default browser save action
 
-                // Do something when Ctrl+S is pressed
+            event.preventDefault();
 
-                console.log('Ctrl+Z pressed!');
-            }
-        });
-    }
+            // Do something when Ctrl+S is pressed
+
+            console.log('Ctrl+Y pressed!');
+        }
+    });
+
+    document.addEventListener('keydown', function (event) {
+        if (event.ctrlKey && event.key === 'z') {
+
+            // Prevent the default browser save action
+
+            event.preventDefault();
+
+            // Do something when Ctrl+S is pressed
+
+            console.log('Ctrl+Z pressed!');
+        }
+    });
 }
