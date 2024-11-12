@@ -30,9 +30,6 @@ function init() {
     }, false);
 }
 
-
-
-
 function color(obj) {
     inputcolor.addEventListener('input', (event) => {
 
@@ -65,11 +62,10 @@ function draw() {
 }
 
 function erase() {
-    var m = confirm("Want to clear");
-    if (m) {
-        ctx.clearRect(0, 0, w, h);
-        document.getElementById("canvasimg").style.display = "none";
-    }
+
+    ctx.clearRect(0, 0, w, h);
+    document.getElementById("canvasimg").style.display = "none";
+
 }
 
 function save() {
@@ -85,167 +81,135 @@ function findxy(res, e) {
         prevY = currY;
         currX = e.clientX - canvas.offsetLeft;
         currY = e.clientY - canvas.offsetTop;
-    }
-    flag = true;
-    dot_flag = true;
-    if (dot_flag) {
-        ctx.beginPath();
-        ctx.fillStyle = x;
-        ctx.fillRect(currX, currY, 2, 2);
-        ctx.closePath();
-        dot_flag = false;
-    }
 
-    function color(obj) {
-        inputcolor.addEventListener('input', (event) => {
-
-            const colorValue = event.target.value;
-            x = colorValue;
-        }), false;
-
-
-        if (obj.id == "white") {
-            x = "white";
-
+        flag = true;
+        dot_flag = true;
+        if (dot_flag) {
+            ctx.beginPath();
+            ctx.fillStyle = x;
+            ctx.fillRect(currX, currY, 2, 2);
+            //ctx.closePath();
+            dot_flag = false;
         }
-        if (obj.id == "colorDisplay") {
-            x = color.value
-        }
-
-        if (x == "white") y = 14;
-        else y = 2;
-
     }
-
-    function updateCustomColor() {
-        const colorPicker = document.getElementById("custom");
-        const colorDisplay = document.getElementById("colorDisplay");
-        colorDisplay.style.backgroundColor = colorPicker.value;
+    if (res == 'up' || res == "out") {
+        flag = false;
     }
-
-    function draw() {
-        ctx.beginPath();
-        ctx.moveTo(prevX, prevY);
-        ctx.lineTo(currX, currY);
-        ctx.strokeStyle = x;
-        ctx.lineWidth = y;
-        ctx.stroke();
-        ctx.closePath();
-    }
-
-    function erase() {
-        ctx.clearRect(0, 0, w, h);
-        document.getElementById("canvasimg").style.display = "none";
-    }
-    function updateCustomColor() {
-        const colorPicker = document.getElementById("custom");
-        const colorDisplay = document.getElementById("colorDisplay");
-        colorDisplay.style.backgroundColor = colorPicker.value;
-    }
-
-    function draw() {
-        ctx.beginPath();
-
-        ctx.moveTo(prevX, prevY);
-        ctx.lineTo(currX, currY);
-        ctx.strokeStyle = x;
-        ctx.lineWidth = y;
-        ctx.strokeSize = y;
-        ctx.stroke();
-        ctx.closePath();
-    }
-
-    function Caligraphy() {
-        ctx.beginPath();
-
-        for (let i = 0; i < 5; i++) {
-            ctx.moveTo(prevX - i, prevY - i);
-            ctx.lineTo(currX - i, currY - i);
-        }
-        ctx.strokeStyle = x;
-        ctx.lineWidth = y;
-        ctx.strokeSize = y;
-        ctx.stroke();
-        ctx.closePath();
-    }
-
-
-    function strokeSize() {
-        const slider = document.getElementById("slider");
-        y = slider.value;
-    }
-
-    function erase() {
-
-        ctx.clearRect(0, 0, w, h);
-        document.getElementById("canvasimg").style.display = "none";
-
-    }
-
-    function save() {
-        document.getElementById("canvasimg").style.border = "2px solid";
-        var dataURL = canvas.toDataURL();
-        document.getElementById("canvasimg").src = dataURL;
-        document.getElementById("canvasimg").style.display = "inline";
-    }
-
-    function findxy(res, e) {
-        if (res == 'down') {
+    if (res == 'move') {
+        if (flag) {
             prevX = currX;
             prevY = currY;
             currX = e.clientX - canvas.offsetLeft;
             currY = e.clientY - canvas.offsetTop;
-
-            flag = true;
-            dot_flag = true;
-            if (dot_flag) {
-                ctx.beginPath();
-                ctx.fillStyle = x;
-                ctx.fillRect(currX, currY, 2, 2);
-                //ctx.closePath();
-                dot_flag = false;
-            }
-        }
-        if (res == 'up' || res == "out") {
-            flag = false;
-        }
-        if (res == 'move') {
-            if (flag) {
-                prevX = currX;
-                prevY = currY;
-                currX = e.clientX - canvas.offsetLeft;
-                currY = e.clientY - canvas.offsetTop;
-                draw();
-            }
+            draw();
         }
     }
-    function HotKeys() {
+}
 
-        document.addEventListener('keydown', function (event) {
-            if (event.ctrlKey && event.key === 'y') {
+function color(obj) {
+    inputcolor.addEventListener('input', (event) => {
 
-                // Prevent the default browser save action
+        const colorValue = event.target.value;
+        x = colorValue;
+    }), false;
 
-                event.preventDefault();
 
-                // Do something when Ctrl+S is pressed
+    if (obj.id == "white") {
+        x = "white";
 
-                console.log('Ctrl+Y pressed!');
-            }
-        });
-
-        document.addEventListener('keydown', function (event) {
-            if (event.ctrlKey && event.key === 'z') {
-
-                // Prevent the default browser save action
-
-                event.preventDefault();
-
-                // Do something when Ctrl+S is pressed
-
-                console.log('Ctrl+Z pressed!');
-            }
-        });
+    }
+    if (obj.id == "colorDisplay") {
+        x = color.value
     }
 
+    if (x == "white") y = 14;
+    else y = 2;
+
+}
+
+function updateCustomColor() {
+    const colorPicker = document.getElementById("custom");
+    const colorDisplay = document.getElementById("colorDisplay");
+    colorDisplay.style.backgroundColor = colorPicker.value;
+}
+
+function draw() {
+    ctx.beginPath();
+    ctx.moveTo(prevX, prevY);
+    ctx.lineTo(currX, currY);
+    ctx.strokeStyle = x;
+    ctx.lineWidth = y;
+    ctx.stroke();
+    ctx.closePath();
+}
+
+function erase() {
+    ctx.clearRect(0, 0, w, h);
+    document.getElementById("canvasimg").style.display = "none";
+}
+
+function draw() {
+    ctx.beginPath();
+
+    ctx.moveTo(prevX, prevY);
+    ctx.lineTo(currX, currY);
+    ctx.strokeStyle = x;
+    ctx.lineWidth = y;
+    ctx.strokeSize = y;
+    ctx.stroke();
+    ctx.closePath();
+}
+
+function Caligraphy() {
+    ctx.beginPath();
+
+    for (let i = 0; i < 5; i++) {
+        ctx.moveTo(prevX - i, prevY - i);
+        ctx.lineTo(currX - i, currY - i);
+    }
+    ctx.strokeStyle = x;
+    ctx.lineWidth = y;
+    ctx.strokeSize = y;
+    ctx.stroke();
+    ctx.closePath();
+}
+
+
+function strokeSize() {
+    const slider = document.getElementById("slider");
+    y = slider.value;
+}
+
+
+function HotKeys() {
+    
+    document.addEventListener('keydown', function (event) {
+        if (event.ctrlKey && event.key === 'z') {
+
+            // Prevent the default browser save action
+
+            event.preventDefault();
+
+            // Do something when Ctrl+S is pressed
+
+            
+
+            console.log('Ctrl+Z pressed!');
+        }
+    });
+
+    document.addEventListener('keydown', function (event) {
+        if (event.ctrlKey && event.key === 'y') {
+
+            // Prevent the default browser save action
+
+            event.preventDefault();
+
+            // Do something when Ctrl+S is pressed
+
+            
+
+            console.log('Ctrl+Y pressed!');
+        }
+    });
 }

@@ -1,12 +1,12 @@
-
 <html>
-    <input type="color" id = "custom" oninput="updateCustomColor()">
-    <div> Size
+<input type="color" id="custom" oninput="updateCustomColor()">
+<div> Size
     <input type="range" min="1" max="50" value="1" id="slider" oninput="strokeSize()">
-    </div>
-    <script src="../JavaScript/CanvasJS.js"></script>
-    
+</div>
+<script src="../JavaScript/CanvasJS.js"></script>
+
 </script>
+
 <body onload="init()">
     <canvas id="can" width="400" height="400" style="position:absolute;top:10%;left:10%;border:2px solid;"></canvas>
     <div style="position:absolute;top:12%;left:43%;">Choose Color</div>
@@ -29,5 +29,5 @@
     <input type="button" value="save" id="btn" size="30" onclick="save()" style="position:absolute;top:55%;left:10%;">
     <input type="button" value="clear" id="clr" size="23" onclick="erase()" style="position:absolute;top:55%;left:15%;">
 </body>
-    </html>
 
+</html>
