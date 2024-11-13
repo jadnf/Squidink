@@ -101,8 +101,7 @@ function findxy(res, e) {
             prevY = currY;
             currX = e.clientX - canvas.offsetLeft;
             currY = e.clientY - canvas.offsetTop;
-            draw();
-        }
+            draw()  }
     }
 }
 
