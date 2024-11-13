@@ -77,31 +77,28 @@ function save() {
 
 function findxy(res, e) {
     if (res == 'down') {
-        prevX = currX;
-        prevY = currY;
-        currX = e.clientX - canvas.offsetLeft;
-        currY = e.clientY - canvas.offsetTop;
-
-        flag = true;
-        dot_flag = true;
-        if (dot_flag) {
+        isDrawing = true;
+        prevMouseX = e.offsetX;
+        prevMouseY = e.offsetY;
+        if (isDrawing) {
             ctx.beginPath();
+            ctx.lineWidth = y;
+            ctx.strokeStyle = x;
             ctx.fillStyle = x;
-            ctx.fillRect(currX, currY, 2, 2);
-            //ctx.closePath();
-            dot_flag = false;
+
+    snapshot = ctx.getImageData(0, 0, canvas.width, canvas.height);
         }
     }
     if (res == 'up' || res == "out") {
-        flag = false;
+        isDrawing = false;
     }
     if (res == 'move') {
-        if (flag) {
-            prevX = currX;
-            prevY = currY;
-            currX = e.clientX - canvas.offsetLeft;
-            currY = e.clientY - canvas.offsetTop;
-            draw()  }
+        if (isDrawing) {
+            ctx.putImageData(snapshot, 0, 0);
+
+        ctx.strokeStyle = x
+        ctx.lineTo(e.offsetX, e.offsetY); 
+        ctx.stroke();  }
     }
 }
 
