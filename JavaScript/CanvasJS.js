@@ -5,6 +5,7 @@ var canvas, ctx, flag = false,
     currY = 0,
     dot_flag = false;
 const inputcolor = document.getElementById('custom');
+var colorValue;
 
 var x = "black",
     y = 2;
@@ -15,6 +16,13 @@ function init() {
     HotKeys();
     w = canvas.width;
     h = canvas.height;
+    
+    inputcolor.addEventListener('input', (event) => {
+
+        colorValue = event.target.value;
+        x = colorValue;
+        strokeSize();
+    }), false;
 
     canvas.addEventListener("mousemove", function (e) {
         findxy('move', e)
@@ -31,11 +39,7 @@ function init() {
 }
 
 function color(obj) {
-    inputcolor.addEventListener('input', (event) => {
-
-        const colorValue = event.target.value;
-        x = colorValue;
-    }), false;
+    
 
 
     if (obj.id == "white") {
@@ -43,7 +47,8 @@ function color(obj) {
 
     }
     if (obj.id == "colorDisplay") {
-        x = color.value
+        x = colorValue
+        strokeSize();
     }
 
     if (x == "white") y = 14;
@@ -51,15 +56,6 @@ function color(obj) {
 
 }
 
-function draw() {
-    ctx.beginPath();
-    ctx.moveTo(prevX, prevY);
-    ctx.lineTo(currX, currY);
-    ctx.strokeStyle = x;
-    ctx.lineWidth = y;
-    ctx.stroke();
-    ctx.closePath();
-}
 
 function erase() {
 
@@ -102,73 +98,14 @@ function findxy(res, e) {
     }
 }
 
-function color(obj) {
-    inputcolor.addEventListener('input', (event) => {
-
-        const colorValue = event.target.value;
-        x = colorValue;
-    }), false;
-
-
-    if (obj.id == "white") {
-        x = "white";
-
-    }
-    if (obj.id == "colorDisplay") {
-        x = color.value
-    }
-
-    if (x == "white") y = 14;
-    else y = 2;
-
-}
-
 function updateCustomColor() {
     const colorPicker = document.getElementById("custom");
     const colorDisplay = document.getElementById("colorDisplay");
     colorDisplay.style.backgroundColor = colorPicker.value;
+    x=colorValue;
 }
 
-function draw() {
-    ctx.beginPath();
-    ctx.moveTo(prevX, prevY);
-    ctx.lineTo(currX, currY);
-    ctx.strokeStyle = x;
-    ctx.lineWidth = y;
-    ctx.stroke();
-    ctx.closePath();
-}
 
-function erase() {
-    ctx.clearRect(0, 0, w, h);
-    document.getElementById("canvasimg").style.display = "none";
-}
-
-function draw() {
-    ctx.beginPath();
-
-    ctx.moveTo(prevX, prevY);
-    ctx.lineTo(currX, currY);
-    ctx.strokeStyle = x;
-    ctx.lineWidth = y;
-    ctx.strokeSize = y;
-    ctx.stroke();
-    ctx.closePath();
-}
-
-function Caligraphy() {
-    ctx.beginPath();
-
-    for (let i = 0; i < 5; i++) {
-        ctx.moveTo(prevX - i, prevY - i);
-        ctx.lineTo(currX - i, currY - i);
-    }
-    ctx.strokeStyle = x;
-    ctx.lineWidth = y;
-    ctx.strokeSize = y;
-    ctx.stroke();
-    ctx.closePath();
-}
 
 
 function strokeSize() {

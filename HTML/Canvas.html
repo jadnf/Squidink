@@ -1,5 +1,5 @@
 
-<html>
+<html onload="updateCustomColor()">
     <input type="color" id = "custom" oninput="updateCustomColor()">
     <div> Size
     <input type="range" min="1" max="50" value="1" id="slider" oninput="strokeSize()">
@@ -10,7 +10,7 @@
 <body onload="init()">
     <canvas id="can" width="400" height="400" style="position:absolute;top:10%;left:10%;border:2px solid;"></canvas>
         
-    <div style="position:absolute;top:17%;left:47%;width:30px;height:30px;border:1px solid #000;" id="colorDisplay" onclick="color(this)">
+    <div style="position:absolute;top:17%;left:47%;width:30px;height:30px;border:1px solid; background: black;" id="colorDisplay" onclick="color(this)">
     </div>
         <div style="position:absolute;top:20%;left:43%;">Eraser</div>
         <div style="position:absolute;top:22%;left:45%;width:15px;height:15px;background:white;border:2px solid;" id="white" onclick="color(this)"></div>
