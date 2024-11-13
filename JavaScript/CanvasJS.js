@@ -3,18 +3,25 @@ var canvas, ctx, flag = false,
     currX = 0,
     prevY = 0,
     currY = 0,
+    canvasWidth = 400,
+    canvasHeight = 400,
+    currentCanvas = 1,
     dot_flag = false;
 const inputcolor = document.getElementById('custom');
+var layers = [];
 
 var x = "black",
     y = 2;
 
 function init() {
-    canvas = document.getElementById('can');
-    ctx = canvas.getContext("2d");
+    canvas = document.getElementById('can1');
     HotKeys();
     w = canvas.width;
     h = canvas.height;
+    layers.push(canvas);
+
+    currentCanvas = 1;
+    changeCurrentCanvasContext()
 
     canvas.addEventListener("mousemove", function (e) {
         findxy('move', e)
@@ -28,6 +35,25 @@ function init() {
     canvas.addEventListener("mouseout", function (e) {
         findxy('out', e)
     }, false);
+}
+function addLayer() {
+    newCanvas = document.createElement('canvas');
+    newCanvas.width = canvasWidth;
+    newCanvas.height = canvasHeight;
+    newCanvas.id = 'can' + (layers.length - 1);
+    newCanvas.style = 'position:absolute;top:10%;left:10%;border:2px solid;';
+    layers.push(newcanvas);
+}
+function changeCurrentLayer(direction) {
+    if (direction = 'up') {
+        currentCanvas ++;
+    } else if (direction = 'down'){
+        currentCanvas --;
+    }
+    changeCurrentCanvasContext();
+}
+function changeCurrentCanvasContext() {
+    ctx = layers[currentCanvas - 1].getContext('2d');
 }
 
 function color(obj) {
