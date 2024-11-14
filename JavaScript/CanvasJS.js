@@ -4,6 +4,7 @@ var canvas, ctx, flag = false,
     prevY = 0,
     currY = 0,
     dot_flag = false;
+
 const inputcolor = document.getElementById('custom');
 
 var x = "black",
@@ -13,6 +14,7 @@ function init() {
     canvas = document.getElementById('can');
     ctx = canvas.getContext("2d");
     HotKeys();
+
     w = canvas.width;
     h = canvas.height;
 
@@ -49,16 +51,6 @@ function color(obj) {
     if (x == "white") y = 14;
     else y = 2;
 
-}
-
-function draw() {
-    ctx.beginPath();
-    ctx.moveTo(prevX, prevY);
-    ctx.lineTo(currX, currY);
-    ctx.strokeStyle = x;
-    ctx.lineWidth = y;
-    ctx.stroke();
-    ctx.closePath();
 }
 
 function erase() {
@@ -105,58 +97,10 @@ function findxy(res, e) {
     }
 }
 
-function color(obj) {
-    inputcolor.addEventListener('input', (event) => {
-
-        const colorValue = event.target.value;
-        x = colorValue;
-    }), false;
-
-
-    if (obj.id == "white") {
-        x = "white";
-
-    }
-    if (obj.id == "colorDisplay") {
-        x = color.value
-    }
-
-    if (x == "white") y = 14;
-    else y = 2;
-
-}
-
 function updateCustomColor() {
     const colorPicker = document.getElementById("custom");
     const colorDisplay = document.getElementById("colorDisplay");
     colorDisplay.style.backgroundColor = colorPicker.value;
-}
-
-function draw() {
-    ctx.beginPath();
-    ctx.moveTo(prevX, prevY);
-    ctx.lineTo(currX, currY);
-    ctx.strokeStyle = x;
-    ctx.lineWidth = y;
-    ctx.stroke();
-    ctx.closePath();
-}
-
-function erase() {
-    ctx.clearRect(0, 0, w, h);
-    document.getElementById("canvasimg").style.display = "none";
-}
-
-function draw() {
-    ctx.beginPath();
-
-    ctx.moveTo(prevX, prevY);
-    ctx.lineTo(currX, currY);
-    ctx.strokeStyle = x;
-    ctx.lineWidth = y;
-    ctx.strokeSize = y;
-    ctx.stroke();
-    ctx.closePath();
 }
 
 function Caligraphy() {
@@ -209,6 +153,13 @@ function HotKeys() {
             
 
             console.log('Ctrl+Y pressed!');
+        }
+    });
+
+    document.addEventListener('keydown', function (event) {
+        if (event.key == 'r') {
+            event.preventDefault();
+            erase();
         }
     });
 }
