@@ -8,7 +8,7 @@
     
 </script>
 <body onload="init()">
-    <canvas id="can" width="400" height="400" style="position:absolute;top:10%;left:10%;border:2px solid;"></canvas>
+    <canvas id="can1" width="400" height="400" style="position:absolute;top:10%;left:10%;border:2px solid;"></canvas>
         
     <div style="position:absolute;top:17%;left:47%;width:30px;height:30px;border:1px solid #000;" id="colorDisplay" onclick="color(this)">
     </div>
@@ -17,6 +17,9 @@
         <img id="canvasimg" style="position:absolute;top:10%;left:52%;" style="display:none;">
         <input type="button" value="save" id="btn" size="30" onclick="save()" style="position:absolute;top:55%;left:10%;">
         <input type="button" value="clear" id="clr" size="23" onclick="erase()" style="position:absolute;top:55%;left:15%;">
+        <input type="button" value="go up a layer" onclick="changeCurrentLayer('up')" style="position:absolute;top:55%;left:20%;">
+        <input type="button" value="add layer" onclick="addLayer()" style="position:absolute;top:55%;left:25%;">
+        <input type="button" value="go down a layer" onclick="changeCurrentLayer('down')" style="position:absolute;top:55%;left:30%;">
     </body>
     </html>
 
