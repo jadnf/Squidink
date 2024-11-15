@@ -7,8 +7,10 @@ var canvas, ctx, flag = false,
     canvasHeight = 400,
     currentCanvas = 1,
     dot_flag = false;
+    isDrawing = false;
 
 const inputcolor = document.getElementById('custom');
+var paintStrokes = [];
 var layers = [];
 
 var x = "black",
@@ -48,9 +50,9 @@ function addLayer() {
 }
 function changeCurrentLayer(direction) {
     if (direction = 'up') {
-        currentCanvas ++;
-    } else if (direction = 'down'){
-        currentCanvas --;
+        currentCanvas++;
+    } else if (direction = 'down') {
+        currentCanvas--;
     }
     changeCurrentCanvasContext();
 }
@@ -104,19 +106,28 @@ function findxy(res, e) {
             ctx.strokeStyle = x;
             ctx.fillStyle = x;
 
-    snapshot = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            snapshot = ctx.getImageData(0, 0, canvas.width, canvas.height);
         }
     }
-    if (res == 'up' || res == "out") {
+    if (res == 'up') {
         isDrawing = false;
     }
     if (res == 'move') {
         if (isDrawing) {
             ctx.putImageData(snapshot, 0, 0);
 
-        ctx.strokeStyle = x
-        ctx.lineTo(e.offsetX, e.offsetY); 
-        ctx.stroke();  }
+            ctx.strokeStyle = x
+            ctx.lineTo(e.offsetX, e.offsetY);
+            ctx.stroke();
+
+            // paintStrokes.push(ctx.stroke());
+
+            // if (paintStrokes.length > 1499)
+            // {
+            //     paintStrokes.pop(0);
+            //     console.log(paintStrokes);
+            // }
+        }
     }
 }
 
@@ -148,7 +159,7 @@ function strokeSize() {
 
 
 function HotKeys() {
-    
+
     document.addEventListener('keydown', function (event) {
         if (event.ctrlKey && event.key === 'z') {
 
@@ -156,9 +167,7 @@ function HotKeys() {
 
             event.preventDefault();
 
-            // Do something when Ctrl+S is pressed
-
-            
+            // paintStrokes.shift();
 
             console.log('Ctrl+Z pressed!');
         }
@@ -173,7 +182,7 @@ function HotKeys() {
 
             // Do something when Ctrl+S is pressed
 
-            
+
 
             console.log('Ctrl+Y pressed!');
         }
