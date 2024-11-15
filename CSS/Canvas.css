@@ -1,0 +1,111 @@
+
+body{
+    background-color: lightgray;
+    margin: 0;
+}
+
+
+#gridContaner{
+ 
+    display: grid;
+    grid-template-columns: repeat(15, 1fr );
+    grid-template-rows: repeat(10, 1fr);
+    height: 100vh
+}
+
+
+#WorkSpace{
+   
+    grid-column: 1/13;
+    grid-row:1/11;
+}
+
+#ToolBar{
+    background-color: darkgray;
+    border-top-left-radius: 1%;
+    border-bottom-left-radius: 1%;
+    grid-column: 13/16;
+    grid-row: 1/11;
+   
+}
+
+#Toolbar-Body{
+    margin: 10;
+    margin-top: 20;
+}
+
+
+#Title{
+  
+    font-size: 35px;
+    text-align:center;
+    padding-bottom: 20px;
+}
+
+#can1{
+    width: 800;
+    height: 800;
+   position: relative;
+    top: 10%;
+    left: 10%;
+    border: 2px black solid;
+    background-color: white;
+}
+
+.label{
+    font-size: 20;
+}
+
+/* borrowing from https://www.sitepoint.com/css-custom-range-slider/ */
+#slider{
+
+    --c: blue; /* active color */
+    --g: 5px; /* the gap */
+    --l: 5px; /* line thickness*/
+    --s: 20px; /* thumb size*/
+  
+    width: 200px; /* input width */
+    height: var(--s);
+    appearance :none;
+    cursor: pointer;
+    background: none;
+    overflow: hidden;
+}
+
+#slider[type="range" i]::-webkit-slider-thumb {
+    height: var(--s);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    box-shadow: 0 0 0 var(--l) inset var(--c);
+    border-image: linear-gradient(90deg,var(--c) 50%,#2b2b2b 0) 0 1/calc(50% - var(--l)/2) 300px/0 calc(300px + var(--g)); 
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  /*end of borrowed code ^^^ */
+
+  
+  #custom{
+  background: none;
+  appearance: none;
+  padding:0;
+ border:none;
+  height: 50px;
+  cursor:pointer;
+  border-width: 2px;
+  }
+
+  #colorDisplay{
+    width:30px;
+    height:30px;
+    position:relative;
+    border:1px solid #000;
+  }
+
+  #Tools{
+    margin-bottom: 8px;
+  }
+  #Eraser{
+    width:15px;height:15px;
+    background:white;
+    border:2px solid;
+  }
