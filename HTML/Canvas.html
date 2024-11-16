@@ -1,0 +1,25 @@
+
+<html onload="updateCustomColor()">
+    <input type="color" id = "custom" oninput="updateCustomColor()">
+    <div> Size
+    <input type="range" min="1" max="50" value="1" id="slider" oninput="strokeSize()">
+    </div>
+    <script src="../JavaScript/CanvasJS.js"></script>
+    
+</script>
+<body onload="init()">
+    <canvas id="can1" width="400" height="400" style="position:absolute;top:10%;left:10%;border:2px solid;"></canvas>
+        
+    <div style="position:absolute;top:17%;left:47%;width:30px;height:30px;border:1px solid; background: black;" id="colorDisplay" onclick="color(this)">
+    </div>
+        <div style="position:absolute;top:20%;left:43%;">Eraser</div>
+        <div style="position:absolute;top:22%;left:45%;width:15px;height:15px;background:white;border:2px solid;" id="white" onclick="color(this)"></div>
+        <img id="canvasimg" style="position:absolute;top:10%;left:52%;" style="display:none;">
+        <input type="button" value="save" id="btn" size="30" onclick="save()" style="position:absolute;top:55%;left:10%;">
+        <input type="button" value="clear" id="clr" size="23" onclick="erase()" style="position:absolute;top:55%;left:15%;">
+        <input type="button" value="go up a layer" onclick="changeCurrentLayer('up')" style="position:absolute;top:55%;left:20%;">
+        <input type="button" value="add layer" onclick="addLayer()" style="position:absolute;top:55%;left:25%;">
+        <input type="button" value="go down a layer" onclick="changeCurrentLayer('down')" style="position:absolute;top:55%;left:30%;">
+    </body>
+    </html>
+
