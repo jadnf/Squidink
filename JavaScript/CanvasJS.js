@@ -1,3 +1,5 @@
+
+
 var canvas, ctx, flag = false,
     prevX = 0,
     currX = 0,
