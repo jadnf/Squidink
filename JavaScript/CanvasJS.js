@@ -12,6 +12,7 @@ var canvas, ctx, flag = false,
 const inputcolor = document.getElementById('custom');
 var paintStrokes = [];
 var layers = [];
+var colorValue;
 
 var x = "black",
     y = 2;
@@ -26,6 +27,12 @@ function init() {
 
     currentCanvas = 1;
     changeCurrentCanvasContext()
+    inputcolor.addEventListener('input', (event) => {
+
+        colorValue = event.target.value;
+        x = colorValue;
+        strokeSize();
+    }), false;
 
     canvas.addEventListener("mousemove", function (e) {
         findxy('move', e)
@@ -61,11 +68,7 @@ function changeCurrentCanvasContext() {
 }
 
 function color(obj) {
-    inputcolor.addEventListener('input', (event) => {
-
-        const colorValue = event.target.value;
-        x = colorValue;
-    }), false;
+    
 
 
     if (obj.id == "white") {
@@ -73,7 +76,8 @@ function color(obj) {
 
     }
     if (obj.id == "colorDisplay") {
-        x = color.value
+        x = colorValue
+        strokeSize();
     }
 
     if (x == "white") y = 14;
@@ -135,6 +139,7 @@ function updateCustomColor() {
     const colorPicker = document.getElementById("custom");
     const colorDisplay = document.getElementById("colorDisplay");
     colorDisplay.style.backgroundColor = colorPicker.value;
+    x=colorValue;
 }
 
 function Caligraphy() {
@@ -150,7 +155,6 @@ function Caligraphy() {
     ctx.stroke();
     ctx.closePath();
 }
-
 
 function strokeSize() {
     const slider = document.getElementById("slider");
