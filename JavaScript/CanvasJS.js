@@ -50,10 +50,12 @@ function addLayer() {
     document.getElementById("canvases").append(layers[layers.length-1]);
 }
 function changeCurrentLayer(direction) {
-    if (direction = 'up') {
-        currentCanvas++;
-    } else if (direction = 'down') {
-        currentCanvas--;
+    if (direction == 'up' && currentCanvas < layers.length) {
+        currentCanvas += 1;
+        
+    } else if (direction == 'down' && currentCanvas > 1){
+        currentCanvas -= 1;
+        
     }
     changeCurrentCanvasContext();
     
