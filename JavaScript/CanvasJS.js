@@ -1,3 +1,5 @@
+
+
 var canvas, ctx, flag = false,
     prevX = 0,
     currX = 0,
@@ -9,8 +11,11 @@ var canvas, ctx, flag = false,
     canvasStyle;
     dot_flag = false;
     isDrawing = false;
+
 const inputcolor = document.getElementById('custom');
+var paintStrokes = [];
 var layers = [];
+var colorValue;
 
 var x = "black",
     y = 2;
@@ -20,6 +25,9 @@ function init() {
     
     canvasStyle = document.getElementById('can1');
     HotKeys();
+
+    w = canvas.width;
+    h = canvas.height;
     layers.push(canvas);
     
     currentCanvas = 1;
@@ -42,12 +50,10 @@ function addLayer() {
     document.getElementById("canvases").append(layers[layers.length-1]);
 }
 function changeCurrentLayer(direction) {
-    if (direction == 'up' && currentCanvas < layers.length) {
-        currentCanvas += 1;
-        
-    } else if (direction == 'down' && currentCanvas > 1){
-        currentCanvas -= 1;
-        
+    if (direction = 'up') {
+        currentCanvas++;
+    } else if (direction = 'down') {
+        currentCanvas--;
     }
     changeCurrentCanvasContext();
     
@@ -73,11 +79,7 @@ function changeCurrentCanvasContext() {
 }
 
 function color(obj) {
-    inputcolor.addEventListener('input', (event) => {
-
-        const colorValue = event.target.value;
-        x = colorValue;
-    }), false;
+    
 
 
     if (obj.id == "white") {
@@ -85,7 +87,8 @@ function color(obj) {
 
     }
     if (obj.id == "colorDisplay") {
-        x = color.value
+        x = colorValue
+        strokeSize();
     }
 
     if (x == "white") y = 14;
@@ -115,38 +118,26 @@ function findxy(res, e) {
     snapshot = ctx.getImageData(0, 0, layers[currentCanvas - 1].width, layers[currentCanvas - 1].height);
         }
     }
-    if (res == 'up' || res == "out") {
+    if (res == 'up') {
         isDrawing = false;
     }
     if (res == 'move') {
         if (isDrawing) {
             ctx.putImageData(snapshot, 0, 0);
 
-        ctx.strokeStyle = x
-        ctx.lineTo(e.offsetX, e.offsetY); 
-        ctx.stroke();  }
+            ctx.strokeStyle = x
+            ctx.lineTo(e.offsetX, e.offsetY);
+            ctx.stroke();
+
+            // paintStrokes.push(ctx.stroke());
+
+            // if (paintStrokes.length > 1499)
+            // {
+            //     paintStrokes.pop(0);
+            //     console.log(paintStrokes);
+            // }
+        }
     }
-}
-
-function color(obj) {
-    inputcolor.addEventListener('input', (event) => {
-
-        const colorValue = event.target.value;
-        x = colorValue;
-    }), false;
-
-
-    if (obj.id == "white") {
-        x = "white";
-
-    }
-    if (obj.id == "colorDisplay") {
-        x = color.value
-    }
-
-    if (x == "white") y = 14;
-    else y = 2;
-
 }
 
 function updateCustomColor() {
@@ -176,7 +167,6 @@ function Caligraphy() {
     ctx.closePath();
 }
 
-
 function strokeSize() {
     const slider = document.getElementById("slider");
     y = slider.value;
@@ -184,7 +174,7 @@ function strokeSize() {
 
 
 function HotKeys() {
-    
+
     document.addEventListener('keydown', function (event) {
         if (event.ctrlKey && event.key === 'z') {
 
@@ -192,9 +182,7 @@ function HotKeys() {
 
             event.preventDefault();
 
-            // Do something when Ctrl+S is pressed
-
-            
+            // paintStrokes.shift();
 
             console.log('Ctrl+Z pressed!');
         }
@@ -209,9 +197,16 @@ function HotKeys() {
 
             // Do something when Ctrl+S is pressed
 
-            
+
 
             console.log('Ctrl+Y pressed!');
+        }
+    });
+
+    document.addEventListener('keydown', function (event) {
+        if (event.key == 'r') {
+            event.preventDefault();
+            erase();
         }
     });
 }
