@@ -1,6 +1,9 @@
 var ctx, flag = false,
     prevMouseX = 0,
     prevMouseY = 0,
+var ctx, flag = false,
+    prevMouseX = 0,
+    prevMouseY = 0,
     canvasWidth = 400,
     canvasHeight = 400,
     currentCanvas = 1,
@@ -37,9 +40,34 @@ function init() {
         strokeSize();
     }), false;
 
+
+    
+    inputcolor.addEventListener('input', (event) => {
+
+        colorValue = event.target.value;
+        x = colorValue;
+        strokeSize();
+    }), false;
+
     layers.push(canvas);
 
+
     currentCanvas = 1;
+    changeCurrentCanvasContext()
+
+
+    canvas.addEventListener("mousemove", function (e) {
+        findxy('move', e)
+    }, false);
+    canvas.addEventListener("mousedown", function (e) {
+        findxy('down', e)
+    }, false);
+    canvas.addEventListener("mouseup", function (e) {
+        findxy('up', e)
+    }, false);
+    canvas.addEventListener("mouseout", function (e) {
+        findxy('out', e)
+    }, false);
     changeCurrentCanvasContext()
 
 
@@ -80,6 +108,7 @@ function changeCurrentCanvasContext() {
 
 function color(obj) {
     
+    
     if (obj.id == "white") {
         //x = "white";
         tool = "eraser";
@@ -87,6 +116,7 @@ function color(obj) {
     if (obj.id == "colorDisplay") {
         x = colorValue
         strokeSize();
+        tool = "pen";
         tool = "pen";
     }
 
