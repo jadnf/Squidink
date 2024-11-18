@@ -6,7 +6,9 @@ var canvas, ctx, flag = false,
     canvasWidth = 400,
     canvasHeight = 400,
     currentCanvas = 1,
+    canvasStyle;
     dot_flag = false;
+    isDrawing = false;
 const inputcolor = document.getElementById('custom');
 var layers = [];
 
@@ -15,45 +17,59 @@ var x = "black",
 
 function init() {
     canvas = document.getElementById('can1');
+    
+    canvasStyle = document.getElementById('can1');
     HotKeys();
-    w = canvas.width;
-    h = canvas.height;
     layers.push(canvas);
-
+    
     currentCanvas = 1;
-    changeCurrentCanvasContext()
-
-    canvas.addEventListener("mousemove", function (e) {
-        findxy('move', e)
-    }, false);
-    canvas.addEventListener("mousedown", function (e) {
-        findxy('down', e)
-    }, false);
-    canvas.addEventListener("mouseup", function (e) {
-        findxy('up', e)
-    }, false);
-    canvas.addEventListener("mouseout", function (e) {
-        findxy('out', e)
-    }, false);
+    w = layers[currentCanvas - 1].width;
+    h = layers[currentCanvas - 1].height;
+    changeCurrentCanvasContext();
+    ctx.fillStyle = "white";
+    //ctx.fillRect(0, 0, w, h);
+    
+    
 }
 function addLayer() {
-    newCanvas = document.createElement('canvas');
+    var newCanvas = document.createElement('canvas');
     newCanvas.width = canvasWidth;
     newCanvas.height = canvasHeight;
-    newCanvas.id = 'can' + (layers.length - 1);
-    newCanvas.style = 'position:absolute;top:10%;left:10%;border:2px solid;';
-    layers.push(newcanvas);
+    newCanvas.id = 'can' + (layers.length + 1);
+    newCanvas.style = canvasStyle;
+    layers.push(newCanvas);
+    document.getElementById("layersDisplay").innerHTML = layers.length;
+    document.getElementById("canvases").append(layers[layers.length-1]);
 }
 function changeCurrentLayer(direction) {
-    if (direction = 'up') {
-        currentCanvas ++;
-    } else if (direction = 'down'){
-        currentCanvas --;
+    if (direction == 'up' && currentCanvas < layers.length) {
+        currentCanvas += 1;
+        
+    } else if (direction == 'down' && currentCanvas > 1){
+        currentCanvas -= 1;
+        
     }
     changeCurrentCanvasContext();
+    
 }
 function changeCurrentCanvasContext() {
     ctx = layers[currentCanvas - 1].getContext('2d');
+    document.getElementById("currentLayerDisplay").innerHTML = currentCanvas;
+    document.getElementById("layersDisplay").innerHTML = layers.length;
+    
+    layers[currentCanvas - 1].addEventListener("mousemove", function (e) {
+        findxy('move', e)
+    }, false);
+    layers[currentCanvas - 1].addEventListener("mousedown", function (e) {
+        findxy('down', e)
+    }, false);
+    layers[currentCanvas - 1].addEventListener("mouseup", function (e) {
+        findxy('up', e)
+    }, false);
+    layers[currentCanvas - 1].addEventListener("mouseout", function (e) {
+        findxy('out', e)
+    }, false);
+    console.log("changed canvas context");
 }
 
 function color(obj) {
@@ -77,22 +93,6 @@ function color(obj) {
 
 }
 
-function draw() {
-    ctx.beginPath();
-    ctx.moveTo(prevX, prevY);
-    ctx.lineTo(currX, currY);
-    ctx.strokeStyle = x;
-    ctx.lineWidth = y;
-    ctx.stroke();
-    ctx.closePath();
-}
-
-function erase() {
-
-    ctx.clearRect(0, 0, w, h);
-    document.getElementById("canvasimg").style.display = "none";
-
-}
 
 function save() {
     document.getElementById("canvasimg").style.border = "2px solid";
@@ -112,7 +112,7 @@ function findxy(res, e) {
             ctx.strokeStyle = x;
             ctx.fillStyle = x;
 
-    snapshot = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    snapshot = ctx.getImageData(0, 0, layers[currentCanvas - 1].width, layers[currentCanvas - 1].height);
         }
     }
     if (res == 'up' || res == "out") {
@@ -155,32 +155,12 @@ function updateCustomColor() {
     colorDisplay.style.backgroundColor = colorPicker.value;
 }
 
-function draw() {
-    ctx.beginPath();
-    ctx.moveTo(prevX, prevY);
-    ctx.lineTo(currX, currY);
-    ctx.strokeStyle = x;
-    ctx.lineWidth = y;
-    ctx.stroke();
-    ctx.closePath();
-}
 
 function erase() {
     ctx.clearRect(0, 0, w, h);
     document.getElementById("canvasimg").style.display = "none";
 }
 
-function draw() {
-    ctx.beginPath();
-
-    ctx.moveTo(prevX, prevY);
-    ctx.lineTo(currX, currY);
-    ctx.strokeStyle = x;
-    ctx.lineWidth = y;
-    ctx.strokeSize = y;
-    ctx.stroke();
-    ctx.closePath();
-}
 
 function Caligraphy() {
     ctx.beginPath();
