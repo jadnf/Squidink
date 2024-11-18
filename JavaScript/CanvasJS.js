@@ -143,9 +143,9 @@ function findxy(res, e) {
                 ctx.stroke();
                 ctx.fill();
             }
-            prevMouseX = e.offsetX;
-            prevMouseY = e.offsetY;
         }
+        prevMouseX = e.offsetX;
+        prevMouseY = e.offsetY;
     }
 }
 
