@@ -1,40 +1,47 @@
-
-
-var canvas, ctx, flag = false,
-    prevX = 0,
-    currX = 0,
-    prevY = 0,
-    currY = 0,
+var ctx, flag = false,
+    prevMouseX = 0,
+    prevMouseY = 0,
     canvasWidth = 400,
     canvasHeight = 400,
     currentCanvas = 1,
     dot_flag = false;
     isDrawing = false;
 
+let canvas = document.getElementById('can');
 const inputcolor = document.getElementById('custom');
+
+var colorValue,tool="pen";
+
 var paintStrokes = [];
 var layers = [];
-var colorValue;
+
+var canvasOffset=$("#can").offset();
+var offsetX = canvasOffset.left;
+var offsetY = canvasOffset.top;
+
 
 var x = "black",
     y = 2;
 
 function init() {
-    canvas = document.getElementById('can1');
     HotKeys();
 
     w = canvas.width;
     h = canvas.height;
-    layers.push(canvas);
 
-    currentCanvas = 1;
-    changeCurrentCanvasContext()
+    
     inputcolor.addEventListener('input', (event) => {
 
         colorValue = event.target.value;
         x = colorValue;
         strokeSize();
     }), false;
+
+    layers.push(canvas);
+
+    currentCanvas = 1;
+    changeCurrentCanvasContext()
+
 
     canvas.addEventListener("mousemove", function (e) {
         findxy('move', e)
@@ -69,21 +76,21 @@ function changeCurrentCanvasContext() {
     ctx = layers[currentCanvas - 1].getContext('2d');
 }
 
+
+
 function color(obj) {
     
-
-
     if (obj.id == "white") {
-        x = "white";
-
+        //x = "white";
+        tool = "eraser";
     }
     if (obj.id == "colorDisplay") {
         x = colorValue
         strokeSize();
+        tool = "pen";
     }
 
-    if (x == "white") y = 14;
-    else y = 2;
+  
 
 }
 
@@ -104,8 +111,6 @@ function save() {
 function findxy(res, e) {
     if (res == 'down') {
         isDrawing = true;
-        prevMouseX = e.offsetX;
-        prevMouseY = e.offsetY;
         if (isDrawing) {
             ctx.beginPath();
             ctx.lineWidth = y;
@@ -120,19 +125,26 @@ function findxy(res, e) {
     }
     if (res == 'move') {
         if (isDrawing) {
-            ctx.putImageData(snapshot, 0, 0);
-
-            ctx.strokeStyle = x
-            ctx.lineTo(e.offsetX, e.offsetY);
-            ctx.stroke();
-
-            // paintStrokes.push(ctx.stroke());
-
-            // if (paintStrokes.length > 1499)
-            // {
-            //     paintStrokes.pop(0);
-            //     console.log(paintStrokes);
-            // }
+            if(tool == "pen")
+            {
+                ctx.globalCompositeOperation="source-over";  
+                ctx.putImageData(snapshot, 0, 0);
+                ctx.arc(prevMouseX,prevMouseY,y,0,Math.PI*2,false);
+                ctx.moveTo(e.offsetX, e.offsetY);
+                ctx.stroke();
+                ctx.fill();
+            }
+            if(tool == "eraser")
+            {
+                ctx.globalCompositeOperation="destination-out";
+                ctx.putImageData(snapshot, 0, 0);
+                ctx.arc(prevMouseX,prevMouseY,8,0,Math.PI*2,false);
+                ctx.moveTo(e.offsetX, e.offsetY);
+                ctx.stroke();
+                ctx.fill();
+            }
+            prevMouseX = e.offsetX;
+            prevMouseY = e.offsetY;
         }
     }
 }
@@ -144,19 +156,8 @@ function updateCustomColor() {
     x=colorValue;
 }
 
-function Caligraphy() {
-    ctx.beginPath();
 
-    for (let i = 0; i < 5; i++) {
-        ctx.moveTo(prevX - i, prevY - i);
-        ctx.lineTo(currX - i, currY - i);
-    }
-    ctx.strokeStyle = x;
-    ctx.lineWidth = y;
-    ctx.strokeSize = y;
-    ctx.stroke();
-    ctx.closePath();
-}
+
 
 function strokeSize() {
     const slider = document.getElementById("slider");
