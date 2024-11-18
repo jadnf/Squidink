@@ -8,6 +8,7 @@ var canvas, ctx, flag = false,
     canvasWidth = 400,
     canvasHeight = 400,
     currentCanvas = 1,
+    canvasStyle;
     dot_flag = false;
     isDrawing = false;
 
@@ -21,41 +22,32 @@ var x = "black",
 
 function init() {
     canvas = document.getElementById('can1');
+    
+    canvasStyle = document.getElementById('can1');
     HotKeys();
 
     w = canvas.width;
     h = canvas.height;
     layers.push(canvas);
-
+    
     currentCanvas = 1;
-    changeCurrentCanvasContext()
-    inputcolor.addEventListener('input', (event) => {
-
-        colorValue = event.target.value;
-        x = colorValue;
-        strokeSize();
-    }), false;
-
-    canvas.addEventListener("mousemove", function (e) {
-        findxy('move', e)
-    }, false);
-    canvas.addEventListener("mousedown", function (e) {
-        findxy('down', e)
-    }, false);
-    canvas.addEventListener("mouseup", function (e) {
-        findxy('up', e)
-    }, false);
-    canvas.addEventListener("mouseout", function (e) {
-        findxy('out', e)
-    }, false);
+    w = layers[currentCanvas - 1].width;
+    h = layers[currentCanvas - 1].height;
+    changeCurrentCanvasContext();
+    ctx.fillStyle = "white";
+    //ctx.fillRect(0, 0, w, h);
+    
+    
 }
 function addLayer() {
-    newCanvas = document.createElement('canvas');
+    var newCanvas = document.createElement('canvas');
     newCanvas.width = canvasWidth;
     newCanvas.height = canvasHeight;
-    newCanvas.id = 'can' + (layers.length - 1);
-    newCanvas.style = 'position:absolute;top:10%;left:10%;border:2px solid;';
-    layers.push(newcanvas);
+    newCanvas.id = 'can' + (layers.length + 1);
+    newCanvas.style = canvasStyle;
+    layers.push(newCanvas);
+    document.getElementById("layersDisplay").innerHTML = layers.length;
+    document.getElementById("canvases").append(layers[layers.length-1]);
 }
 function changeCurrentLayer(direction) {
     if (direction = 'up') {
@@ -64,9 +56,26 @@ function changeCurrentLayer(direction) {
         currentCanvas--;
     }
     changeCurrentCanvasContext();
+    
 }
 function changeCurrentCanvasContext() {
     ctx = layers[currentCanvas - 1].getContext('2d');
+    document.getElementById("currentLayerDisplay").innerHTML = currentCanvas;
+    document.getElementById("layersDisplay").innerHTML = layers.length;
+    
+    layers[currentCanvas - 1].addEventListener("mousemove", function (e) {
+        findxy('move', e)
+    }, false);
+    layers[currentCanvas - 1].addEventListener("mousedown", function (e) {
+        findxy('down', e)
+    }, false);
+    layers[currentCanvas - 1].addEventListener("mouseup", function (e) {
+        findxy('up', e)
+    }, false);
+    layers[currentCanvas - 1].addEventListener("mouseout", function (e) {
+        findxy('out', e)
+    }, false);
+    console.log("changed canvas context");
 }
 
 function color(obj) {
@@ -87,12 +96,6 @@ function color(obj) {
 
 }
 
-function erase() {
-
-    ctx.clearRect(0, 0, w, h);
-    document.getElementById("canvasimg").style.display = "none";
-
-}
 
 function save() {
     document.getElementById("canvasimg").style.border = "2px solid";
@@ -112,7 +115,7 @@ function findxy(res, e) {
             ctx.strokeStyle = x;
             ctx.fillStyle = x;
 
-            snapshot = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    snapshot = ctx.getImageData(0, 0, layers[currentCanvas - 1].width, layers[currentCanvas - 1].height);
         }
     }
     if (res == 'up') {
@@ -141,8 +144,14 @@ function updateCustomColor() {
     const colorPicker = document.getElementById("custom");
     const colorDisplay = document.getElementById("colorDisplay");
     colorDisplay.style.backgroundColor = colorPicker.value;
-    x=colorValue;
 }
+
+
+function erase() {
+    ctx.clearRect(0, 0, w, h);
+    document.getElementById("canvasimg").style.display = "none";
+}
+
 
 function Caligraphy() {
     ctx.beginPath();
