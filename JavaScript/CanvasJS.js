@@ -4,21 +4,20 @@ var ctx, flag = false,
     canvasWidth = 400,
     canvasHeight = 400,
     currentCanvas = 1,
-    canvasStyle;
-    dot_flag = false;
-    isDrawing = false;
+    canvasStyle,
+    dot_flag = false,
+    isDrawing = false,
+    img, 
+    snapshot;
 
 let canvas = document.getElementById('can');
 const inputcolor = document.getElementById('custom');
+const imageInput = document.getElementById('image')
 
 var colorValue,tool="pen";
 
 var paintStrokes = [];
 var layers = [];
-
-var canvasOffset=$("#can").offset();
-var offsetX = canvasOffset.left;
-var offsetY = canvasOffset.top;
 
 
 var x = "black",
@@ -158,11 +157,46 @@ function findxy(res, e) {
                 ctx.stroke();
                 ctx.fill();
             }
-            prevMouseX = e.offsetX;
-            prevMouseY = e.offsetY;
         }
+        prevMouseX = e.offsetX;
+        prevMouseY = e.offsetY;
     }
 }
+
+function ImportImage()
+{
+    addLayer();
+    ctx = layers[currentCanvas - 1].getContext("2d");
+    imageInput.addEventListener("change", (event) => {
+        // Get the selected file
+        const file = event.target.files[0];
+        
+        if (file) {
+            const reader = new FileReader();
+    
+            // When the file is loaded
+            reader.onload = (e) => {
+                const img = new Image(); // Create a new Image object
+                img.src = e.target.result; // Set the source to the file's data URL
+    
+                img.onload = () => {
+                    // Draw the image onto the canvas
+                    
+                    ctx.drawImage(img, 10, 10); // Draw image
+                };
+            };
+    
+           // ctx.putImageData(snapshot, 0, 0);
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // layers[currentCanvas - 1].addEventListener("mousedown", function (e) {
+    //     ctx.drawImage(img.value,e.offsetX,e.offsetY);
+    // }, false);
+}
+
+
 
 function updateCustomColor() {
     const colorPicker = document.getElementById("custom");
