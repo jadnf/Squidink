@@ -140,6 +140,7 @@ function findxy(res, e) {
     }
     if (res == 'move') {
         if (isDrawing) {
+<<<<<<< Updated upstream
             if(tool == "pen")
             {
                 ctx.globalCompositeOperation="source-over";  
@@ -160,6 +161,9 @@ function findxy(res, e) {
             }
             prevMouseX = e.offsetX;
             prevMouseY = e.offsetY;
+=======
+           if
+>>>>>>> Stashed changes
         }
     }
 }
