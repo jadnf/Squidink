@@ -4,11 +4,15 @@
     <div> Size
     <input type="range" min="1" max="50" value="1" id="slider" oninput="strokeSize()">
     </div>
+    <input type ="file" id= "image" oninput="ImportImage()">
+    <script type="JavaScript/BrushesJS.js"></script>
     <script src="../JavaScript/CanvasJS.js"></script>
     
 </script>
 <body onload="init()">
-    <canvas id="can1" width="400" height="400" style="position:absolute;top:10%;left:10%;border:2px solid;"></canvas>
+    <div id="canvases" style="position:relative;top:10%;left:10%;">
+        <canvas id="can1" width="400" height="400" style="position:absolute;top:0%;left:0%;border:2px solid;"></canvas>
+    </div>
         
     <div style="position:absolute;top:17%;left:47%;width:30px;height:30px;border:1px solid; background: black;" id="colorDisplay" onclick="color(this)">
     </div>
