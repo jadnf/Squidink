@@ -1,5 +1,6 @@
 function pen(ctx, y, prevX, prevY,e,snapshot) 
 {
+    ctx.lineJoin = ctx.lineCap = 'round'
     ctx.globalCompositeOperation="source-over";  
     ctx.putImageData(snapshot, 0, 0);
     ctx.arc(prevX,prevY,y,0,Math.PI*2,false);
