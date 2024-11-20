@@ -99,20 +99,13 @@ function changeCurrentCanvasContext() {
 }
 
 
+function color()
+{
+    x = colorValue;
+}
 
-function color(obj) {
-    
-    if (obj.id == "white") {
-        //x = "white";
-        tool = "eraser";
-    }
-    if (obj.id == "colorDisplay") {
-        x = colorValue
-        strokeSize();
-        tool = "pen";
-    }
-
-
+function SetTool(obj) {
+    tool = obj.id
 }
 
 
