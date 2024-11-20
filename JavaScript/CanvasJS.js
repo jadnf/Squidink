@@ -1,14 +1,15 @@
-var ctx, flag = false,
-    prevMouseX = 0,
-    prevMouseY = 0,
-    canvasWidth = 400,
-    canvasHeight = 400,
-    currentCanvas = 1,
+var canvas, ctx, flag = false,
+    prevX = 0,
+    currX = 0,
+    prevY = 0,
+    currY = 0,
+    w,
+    h,
+    currentCanvas,
     canvasStyle;
     dot_flag = false;
     isDrawing = false;
 
-let canvas = document.getElementById('can');
 const inputcolor = document.getElementById('custom');
 
 var colorValue,tool="pen";
@@ -26,74 +27,65 @@ var x = "black",
 
 function init() {
     canvas = document.getElementById('can1');
-    
-    canvasStyle = document.getElementById('can1');
     HotKeys();
 
     w = canvas.width;
     h = canvas.height;
-
-    
-    inputcolor.addEventListener('input', (event) => {
-
-        colorValue = event.target.value;
-        x = colorValue;
-        strokeSize();
-    }), false;
+    document.getElementById("canvases").width = w;
+    document.getElementById("canvases").height = h;
 
     layers.push(canvas);
-
-    currentCanvas = 1;
-    changeCurrentCanvasContext()
-
-
-    canvas.addEventListener("mousemove", function (e) {
-        findxy('move', e)
-    }, false);
-    canvas.addEventListener("mousedown", function (e) {
-        findxy('down', e)
-    }, false);
-    canvas.addEventListener("mouseup", function (e) {
-        findxy('up', e)
-    }, false);
-    canvas.addEventListener("mouseout", function (e) {
-        findxy('out', e)
-    }, false);
+    
+    currentCanvas = 0;
+    changeCurrentCanvasContext();
+    ctx.fillStyle = "white";
+    //ctx.fillRect(0, 0, w, h);
+    
+    
 }
 function addLayer() {
     var newCanvas = document.createElement('canvas');
-    newCanvas.width = canvasWidth;
-    newCanvas.height = canvasHeight;
+    newCanvas.width = w;
+    newCanvas.height = h;
     newCanvas.id = 'can' + (layers.length + 1);
-    newCanvas.style = canvasStyle;
+    //newCanvas.style = `position:absolute;width:${w};height:${h};top:0;left:0;z-index:${layers.length + 1};`;
+    newCanvas.style.position = "absolute";
+    newCanvas.style.width = w+"";
+    newCanvas.style.height = h+"";
+    newCanvas.style.top = "0%";
+    newCanvas.style.left = "0%";
+    //newCanvas.style.zIndex = (layers.length + 1)+"";
     layers.push(newCanvas);
     document.getElementById("layersDisplay").innerHTML = layers.length;
     document.getElementById("canvases").append(layers[layers.length-1]);
+    console.log(newCanvas.style.zIndex);
 }
 function changeCurrentLayer(direction) {
-    if (direction = 'up') {
-        currentCanvas++;
-    } else if (direction = 'down') {
-        currentCanvas--;
+    if (direction == 'up' && (currentCanvas + 1) < layers.length) {
+        currentCanvas += 1;
+        
+    } else if (direction == 'down' && (currentCanvas + 1) > 1){
+        currentCanvas -= 1;
+        
     }
     changeCurrentCanvasContext();
     
 }
 function changeCurrentCanvasContext() {
-    ctx = layers[currentCanvas - 1].getContext('2d');
-    document.getElementById("currentLayerDisplay").innerHTML = currentCanvas;
+    ctx = layers[currentCanvas].getContext('2d');
+    document.getElementById("currentLayerDisplay").innerHTML = currentCanvas+1;
     document.getElementById("layersDisplay").innerHTML = layers.length;
     
-    layers[currentCanvas - 1].addEventListener("mousemove", function (e) {
+    layers[currentCanvas].addEventListener("mousemove", function (e) {
         findxy('move', e)
     }, false);
-    layers[currentCanvas - 1].addEventListener("mousedown", function (e) {
+    layers[currentCanvas].addEventListener("mousedown", function (e) {
         findxy('down', e)
     }, false);
-    layers[currentCanvas - 1].addEventListener("mouseup", function (e) {
+    layers[currentCanvas].addEventListener("mouseup", function (e) {
         findxy('up', e)
     }, false);
-    layers[currentCanvas - 1].addEventListener("mouseout", function (e) {
+    layers[currentCanvas].addEventListener("mouseout", function (e) {
         findxy('out', e)
     }, false);
     console.log("changed canvas context");
@@ -132,7 +124,7 @@ function findxy(res, e) {
             ctx.strokeStyle = x;
             ctx.fillStyle = x;
 
-    snapshot = ctx.getImageData(0, 0, layers[currentCanvas - 1].width, layers[currentCanvas - 1].height);
+    snapshot = ctx.getImageData(0, 0, layers[currentCanvas].width, layers[currentCanvas].height);
         }
     }
     if (res == 'up') {
@@ -167,7 +159,7 @@ function findxy(res, e) {
 function updateCustomColor() {
     const colorPicker = document.getElementById("custom");
     const colorDisplay = document.getElementById("colorDisplay");
-    colorDisplay.style.backgroundColor = colorPicker.value;
+    x = colorPicker.value;
 }
 
 
