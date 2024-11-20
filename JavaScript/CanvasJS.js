@@ -112,6 +112,7 @@ function color(obj) {
         tool = "pen";
     }
 
+
 }
 
 
@@ -120,6 +121,14 @@ function save() {
     var dataURL = canvas.toDataURL();
     document.getElementById("canvasimg").src = dataURL;
     document.getElementById("canvasimg").style.display = "inline";
+}
+
+
+function erase() {
+
+    ctx.clearRect(0, 0, w, h);
+    document.getElementById("canvasimg").style.display = "none";
+
 }
 
 function findxy(res, e) {
