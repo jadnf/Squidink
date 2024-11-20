@@ -139,6 +139,8 @@ function findxy(res, e) {
             ctx.lineWidth = y;
             ctx.strokeStyle = x;
             ctx.fillStyle = x;
+            ctx.lineJoin = ctx.lineCap = 'round';
+            ctx.moveTo(e.offsetX, e.offsetY);
 
     snapshot = ctx.getImageData(0, 0, layers[currentCanvas - 1].width, layers[currentCanvas - 1].height);
         }
@@ -152,19 +154,15 @@ function findxy(res, e) {
             {
                 ctx.globalCompositeOperation="source-over";  
                 ctx.putImageData(snapshot, 0, 0);
-                ctx.arc(prevMouseX,prevMouseY,y,0,Math.PI*2,false);
-                ctx.moveTo(e.offsetX, e.offsetY);
+                ctx.lineTo(e.offsetX, e.offsetY);
                 ctx.stroke();
-                ctx.fill();
             }
             if(tool == "eraser")
             {
                 ctx.globalCompositeOperation="destination-out";
                 ctx.putImageData(snapshot, 0, 0);
-                ctx.arc(prevMouseX,prevMouseY,8,0,Math.PI*2,false);
-                ctx.moveTo(e.offsetX, e.offsetY);
+                ctx.lineTo(e.offsetX, e.offsetY);
                 ctx.stroke();
-                ctx.fill();
             }
         }
         prevMouseX = e.offsetX;
