@@ -8,8 +8,8 @@ var canvas, ctx, flag = false,
     canvasWidth = 400,
     canvasHeight = 400,
     currentCanvas = 1,
-    canvasStyle;
-    dot_flag = false;
+    canvasStyle,
+    dot_flag = false,
     isDrawing = false;
 
 const inputcolor = document.getElementById('custom');
