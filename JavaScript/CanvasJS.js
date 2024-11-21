@@ -8,6 +8,12 @@ var canvas, ctx, flag = false,
     currentCanvas,
     canvasStyle;
     dot_flag = false;
+    canvasWidth = 400,
+    canvasHeight = 400,
+    currentCanvas = 0,
+    currentStroke = 0,
+    canvasStyle,
+    dot_flag = false,
     isDrawing = false;
 
 const inputcolor = document.getElementById('custom');
@@ -21,6 +27,9 @@ var canvasOffset=$("#can").offset();
 var offsetX = canvasOffset.left;
 var offsetY = canvasOffset.top;
 
+let actionHistroy = [];
+let redoHistory = [];
+var layers = [];
 
 var x = "black",
     y = 2;
@@ -37,11 +46,30 @@ function init() {
     layers.push(canvas);
     
     currentCanvas = 0;
+
+    currentStroke = 0;
+    currentCanvas = 0;
+    w = layers[currentCanvas].width;
+    h = layers[currentCanvas].height;
     changeCurrentCanvasContext();
     ctx.fillStyle = "white";
     //ctx.fillRect(0, 0, w, h);
-    
-    
+
+    changeCurrentCanvasContext();
+
+
+    canvas.addEventListener("mousemove", function (e) {
+        findxy('move', e)
+    }, false);
+    canvas.addEventListener("mousedown", function (e) {
+        findxy('down', e)
+    }, false);
+    canvas.addEventListener("mouseup", function (e) {
+        findxy('up', e)
+    }, false);
+    canvas.addEventListener("mouseout", function (e) {
+        findxy('out', e)
+    }, false);
 }
 function addLayer() {
     var newCanvas = document.createElement('canvas');
@@ -73,7 +101,7 @@ function changeCurrentLayer(direction) {
 }
 function changeCurrentCanvasContext() {
     ctx = layers[currentCanvas].getContext('2d');
-    document.getElementById("currentLayerDisplay").innerHTML = currentCanvas+1;
+    document.getElementById("currentLayerDisplay").innerHTML = currentCanvas;
     document.getElementById("layersDisplay").innerHTML = layers.length;
     
     layers[currentCanvas].addEventListener("mousemove", function (e) {
@@ -88,7 +116,6 @@ function changeCurrentCanvasContext() {
     layers[currentCanvas].addEventListener("mouseout", function (e) {
         findxy('out', e)
     }, false);
-    console.log("changed canvas context");
 }
 
 
@@ -132,6 +159,11 @@ function findxy(res, e) {
     }
     if (res == 'move') {
         if (isDrawing) {
+            ctx.putImageData(snapshot, 0, 0);
+
+            ctx.strokeStyle = x
+            ctx.lineTo(e.offsetX, e.offsetY);
+            ctx.stroke();
             if(tool == "pen")
             {
                 ctx.globalCompositeOperation="source-over";  
@@ -152,6 +184,9 @@ function findxy(res, e) {
             }
             prevMouseX = e.offsetX;
             prevMouseY = e.offsetY;
+
+            // actionHistory.push({ type: 'line', x1: prevX, y1: prevY, x2: e.clientX, y2: e.clientY });
+            // redoHistory = []; // Clear redo history
         }
     }
 }
@@ -171,7 +206,6 @@ function strokeSize() {
 
 
 function HotKeys() {
-
     document.addEventListener('keydown', function (event) {
         if (event.ctrlKey && event.key === 'z') {
 
@@ -179,7 +213,7 @@ function HotKeys() {
 
             event.preventDefault();
 
-            // paintStrokes.shift();
+            paintStrokes[currentStroke - 1];
 
             console.log('Ctrl+Z pressed!');
         }
