@@ -13,6 +13,7 @@ var ctx, flag = false,
 let canvas = document.getElementById('can');
 const inputcolor = document.getElementById('custom');
 const imageInput = document.getElementById('image')
+var shadowAmount;
 
 var colorValue,tool="pen";
 
@@ -31,9 +32,8 @@ function init() {
 
     w = canvas.width;
     h = canvas.height;
-
     
-    inputcolor.addEventListener('input', (event) => {
+        inputcolor.addEventListener('input', (event) => {
 
         colorValue = event.target.value;
         x = colorValue;
@@ -142,13 +142,18 @@ function findxy(res, e) {
     }
     if (res == 'move') {
         if (isDrawing) {
-            if(tool == "pen")
+            switch(tool)
             {
-                pen(ctx,e,snapshot);
-            }
-            if(tool == "eraser")
-            {
-                eraser(ctx,e,snapshot);
+                case "pen":
+                    pen(ctx, e, snapshot);
+                    break;
+                case "eraser":
+                    eraser(ctx, e, snapshot);
+                    break;
+               case "airbrush":
+                    shadowbrush(ctx,e,snapshot,y,x);
+               break;
+
             }
         }
         prevMouseX = e.offsetX;
@@ -191,17 +196,19 @@ function ImportImage()
 
 
 
-function updateCustomColor() {
-    const colorPicker = document.getElementById("custom");
-    const colorDisplay = document.getElementById("colorDisplay");
-    colorDisplay.style.backgroundColor = colorPicker.value;
-}
+
 
 
 
 function strokeSize() {
     const slider = document.getElementById("slider");
     y = slider.value;
+}
+
+function shadowAmount() 
+{
+    const shadowSlider = document.getElementById("shadowSlider");
+    shadowAmount = shadowSlider.value;
 }
 
 
