@@ -7,15 +7,19 @@ var canvas, ctx, flag = false,
     currY = 0,
     canvasWidth = 400,
     canvasHeight = 400,
-    currentCanvas = 1,
-    canvasStyle;
-    dot_flag = false;
+    currentCanvas = 0,
+    currentStroke = 0,
+    canvasStyle,
+    dot_flag = false,
     isDrawing = false;
 
 const inputcolor = document.getElementById('custom');
-var paintStrokes = [];
+
+var colorValue,tool="pen";
+
+let actionHistroy = [];
+let redoHistory = [];
 var layers = [];
-var colorValue;
 
 var x = "black",
     y = 2;
@@ -29,15 +33,30 @@ function init() {
     w = canvas.width;
     h = canvas.height;
     layers.push(canvas);
-    
-    currentCanvas = 1;
-    w = layers[currentCanvas - 1].width;
-    h = layers[currentCanvas - 1].height;
+
+    currentStroke = 0;
+    currentCanvas = 0;
+    w = layers[currentCanvas].width;
+    h = layers[currentCanvas].height;
     changeCurrentCanvasContext();
     ctx.fillStyle = "white";
     //ctx.fillRect(0, 0, w, h);
-    
-    
+
+    changeCurrentCanvasContext();
+
+
+    canvas.addEventListener("mousemove", function (e) {
+        findxy('move', e)
+    }, false);
+    canvas.addEventListener("mousedown", function (e) {
+        findxy('down', e)
+    }, false);
+    canvas.addEventListener("mouseup", function (e) {
+        findxy('up', e)
+    }, false);
+    canvas.addEventListener("mouseout", function (e) {
+        findxy('out', e)
+    }, false);
 }
 function addLayer() {
     var newCanvas = document.createElement('canvas');
@@ -59,23 +78,22 @@ function changeCurrentLayer(direction) {
     
 }
 function changeCurrentCanvasContext() {
-    ctx = layers[currentCanvas - 1].getContext('2d');
+    ctx = layers[currentCanvas].getContext('2d');
     document.getElementById("currentLayerDisplay").innerHTML = currentCanvas;
     document.getElementById("layersDisplay").innerHTML = layers.length;
     
-    layers[currentCanvas - 1].addEventListener("mousemove", function (e) {
+    layers[currentCanvas].addEventListener("mousemove", function (e) {
         findxy('move', e)
     }, false);
-    layers[currentCanvas - 1].addEventListener("mousedown", function (e) {
+    layers[currentCanvas].addEventListener("mousedown", function (e) {
         findxy('down', e)
     }, false);
-    layers[currentCanvas - 1].addEventListener("mouseup", function (e) {
+    layers[currentCanvas].addEventListener("mouseup", function (e) {
         findxy('up', e)
     }, false);
-    layers[currentCanvas - 1].addEventListener("mouseout", function (e) {
+    layers[currentCanvas].addEventListener("mouseout", function (e) {
         findxy('out', e)
     }, false);
-    console.log("changed canvas context");
 }
 
 function color(obj) {
@@ -115,7 +133,7 @@ function findxy(res, e) {
             ctx.strokeStyle = x;
             ctx.fillStyle = x;
 
-    snapshot = ctx.getImageData(0, 0, layers[currentCanvas - 1].width, layers[currentCanvas - 1].height);
+    snapshot = ctx.getImageData(0, 0, layers[currentCanvas].width, layers[currentCanvas].height);
         }
     }
     if (res == 'up') {
@@ -128,14 +146,29 @@ function findxy(res, e) {
             ctx.strokeStyle = x
             ctx.lineTo(e.offsetX, e.offsetY);
             ctx.stroke();
+            if(tool == "pen")
+            {
+                ctx.globalCompositeOperation="source-over";  
+                ctx.putImageData(snapshot, 0, 0);
+                ctx.arc(prevMouseX,prevMouseY,y,0,Math.PI*2,false);
+                ctx.moveTo(e.offsetX, e.offsetY);
+                ctx.stroke();
+                ctx.fill();
+            }
+            if(tool == "eraser")
+            {
+                ctx.globalCompositeOperation="destination-out";
+                ctx.putImageData(snapshot, 0, 0);
+                ctx.arc(prevMouseX,prevMouseY,8,0,Math.PI*2,false);
+                ctx.moveTo(e.offsetX, e.offsetY);
+                ctx.stroke();
+                ctx.fill();
+            }
+            prevMouseX = e.offsetX;
+            prevMouseY = e.offsetY;
 
-            // paintStrokes.push(ctx.stroke());
-
-            // if (paintStrokes.length > 1499)
-            // {
-            //     paintStrokes.pop(0);
-            //     console.log(paintStrokes);
-            // }
+            // actionHistory.push({ type: 'line', x1: prevX, y1: prevY, x2: e.clientX, y2: e.clientY });
+            // redoHistory = []; // Clear redo history
         }
     }
 }
@@ -143,7 +176,7 @@ function findxy(res, e) {
 function updateCustomColor() {
     const colorPicker = document.getElementById("custom");
     const colorDisplay = document.getElementById("colorDisplay");
-    colorDisplay.style.backgroundColor = colorPicker.value;
+    x = colorPicker.value;
 }
 
 
@@ -174,7 +207,6 @@ function strokeSize() {
 
 
 function HotKeys() {
-
     document.addEventListener('keydown', function (event) {
         if (event.ctrlKey && event.key === 'z') {
 
@@ -182,7 +214,7 @@ function HotKeys() {
 
             event.preventDefault();
 
-            // paintStrokes.shift();
+            paintStrokes[currentStroke - 1];
 
             console.log('Ctrl+Z pressed!');
         }
