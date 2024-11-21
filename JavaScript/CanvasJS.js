@@ -214,7 +214,7 @@ function HotKeys() {
 
             event.preventDefault();
 
-            paintStrokes[currentStroke - 1];
+            //paintStrokes[currentStroke - 1];
 
             console.log('Ctrl+Z pressed!');
         }
@@ -240,5 +240,21 @@ function HotKeys() {
             event.preventDefault();
             erase();
         }
+    });
+
+    document.addEventListener('keydown', function (event) {
+        if (event.key == 'e') {
+
+            event.preventDefault();
+            eraser();
+        } 
+    });
+
+    document.addEventListener('keydown', function (event) {
+       if (event.key == 'p') {
+
+        event.preventDefault();
+        pen();
+       } 
     });
 }
