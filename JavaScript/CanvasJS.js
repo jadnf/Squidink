@@ -6,8 +6,8 @@ var canvas, ctx, flag = false,
     w,
     h,
     currentCanvas,
-    canvasStyle;
-    dot_flag = false;
+    canvasStyle,
+    dot_flag = false,
     canvasWidth = 400,
     canvasHeight = 400,
     currentCanvas = 1,
