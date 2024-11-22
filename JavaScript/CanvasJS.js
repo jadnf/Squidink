@@ -1,13 +1,11 @@
-var canvas, ctx, flag = false,
-    prevX = 0,
-    currX = 0,
-    prevY = 0,
-    currY = 0,
+var ctx, flag = false,
+    prevMouseX = 0,
     w,
     h,
-    currentCanvas,
-    canvasStyle,
-    dot_flag = false,
+    prevMouseY = 0,
+    canvasWidth = 400,
+    canvasHeight = 400,
+    currentCanvas = 1,
     canvasWidth = 400,
     canvasHeight = 400,
     currentCanvas = 1,
@@ -26,13 +24,8 @@ var colorValue,tool="pen";
 var paintStrokes = [];
 var layers = [];
 
-var canvasOffset=$("#can").offset();
-var offsetX = canvasOffset.left;
-var offsetY = canvasOffset.top;
-
 let actionHistroy = [];
 let redoHistory = [];
-var layers = [];
 
 var x = "black",
     y = 2;
@@ -181,9 +174,9 @@ function findxy(res, e) {
                 case "eraser":
                     eraser(ctx, e, snapshot);
                     break;
-            //    case "airbrush":
-            //         shadowbrush(ctx,e,snapshot,y,x);
-            //    break;
+               case "airbrush":
+                    shadowbrush(ctx,e,snapshot,y,x);
+               break;
 
             }
         }
@@ -195,7 +188,7 @@ function findxy(res, e) {
 function ImportImage()
 {
     addLayer();
-    ctx = layers[currentCanvas - 1].getContext("2d");
+    ctx = layers[currentCanvas].getContext("2d");
     imageInput.addEventListener("change", (event) => {
         // Get the selected file
         const file = event.target.files[0];
