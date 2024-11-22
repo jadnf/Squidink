@@ -150,9 +150,9 @@ function findxy(res, e) {
                 case "eraser":
                     eraser(ctx, e, snapshot);
                     break;
-               case "airbrush":
-                    shadowbrush(ctx,e,snapshot,y,x);
-               break;
+            //    case "airbrush":
+            //         shadowbrush(ctx,e,snapshot,y,x);
+            //    break;
 
             }
         }
