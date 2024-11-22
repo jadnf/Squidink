@@ -3,14 +3,35 @@ var canvas, ctx, flag = false,
     currX = 0,
     prevY = 0,
     currY = 0,
+    w,
+    h,
+    currentCanvas,
+    canvasStyle,
+    dot_flag = false,
     canvasWidth = 400,
     canvasHeight = 400,
     currentCanvas = 1,
-    dot_flag = false;
-    isDrawing = false;
+    canvasStyle,
+    dot_flag = false,
+    isDrawing = false,
+    img, 
+    snapshot;
 
 const inputcolor = document.getElementById('custom');
+const imageInput = document.getElementById('image');
+var shadowAmount;
+
+var colorValue,tool="pen";
+
 var paintStrokes = [];
+var layers = [];
+
+var canvasOffset=$("#can").offset();
+var offsetX = canvasOffset.left;
+var offsetY = canvasOffset.top;
+
+let actionHistroy = [];
+let redoHistory = [];
 var layers = [];
 
 var x = "black",
@@ -22,10 +43,30 @@ function init() {
 
     w = canvas.width;
     h = canvas.height;
-    layers.push(canvas);
+    document.getElementById("canvases").width = w;
+    document.getElementById("canvases").height = h;
+    
+        inputcolor.addEventListener('input', (event) => {
 
-    currentCanvas = 1;
-    changeCurrentCanvasContext()
+        colorValue = event.target.value;
+        x = colorValue;
+        strokeSize();
+    }), false;
+
+    layers.push(canvas);
+    
+    currentCanvas = 0;
+
+    currentStroke = 0;
+    currentCanvas = 0;
+    w = layers[currentCanvas].width;
+    h = layers[currentCanvas].height;
+    changeCurrentCanvasContext();
+    ctx.fillStyle = "white";
+    //ctx.fillRect(0, 0, w, h);
+
+    changeCurrentCanvasContext();
+
 
     canvas.addEventListener("mousemove", function (e) {
         findxy('move', e)
@@ -41,52 +82,63 @@ function init() {
     }, false);
 }
 function addLayer() {
-    newCanvas = document.createElement('canvas');
-    newCanvas.width = canvasWidth;
-    newCanvas.height = canvasHeight;
-    newCanvas.id = 'can' + (layers.length - 1);
-    newCanvas.style = 'position:absolute;top:10%;left:10%;border:2px solid;';
-    layers.push(newcanvas);
+    var newCanvas = document.createElement('canvas');
+    newCanvas.width = w;
+    newCanvas.height = h;
+    newCanvas.id = 'can' + (layers.length + 1);
+    //newCanvas.style = `position:absolute;width:${w};height:${h};top:0;left:0;z-index:${layers.length + 1};`;
+    newCanvas.style.position = "absolute";
+    newCanvas.style.width = w+"";
+    newCanvas.style.height = h+"";
+    newCanvas.style.top = "0%";
+    newCanvas.style.left = "0%";
+    //newCanvas.style.zIndex = (layers.length + 1)+"";
+    layers.push(newCanvas);
+    document.getElementById("layersDisplay").innerHTML = layers.length;
+    document.getElementById("canvases").append(layers[layers.length-1]);
+    console.log(newCanvas.style.zIndex);
 }
 function changeCurrentLayer(direction) {
-    if (direction = 'up') {
-        currentCanvas++;
-    } else if (direction = 'down') {
-        currentCanvas--;
+    if (direction == 'up' && (currentCanvas + 1) < layers.length) {
+        currentCanvas += 1;
+        
+    } else if (direction == 'down' && (currentCanvas + 1) > 1){
+        currentCanvas -= 1;
+        
     }
     changeCurrentCanvasContext();
+    
 }
 function changeCurrentCanvasContext() {
-    ctx = layers[currentCanvas - 1].getContext('2d');
+    ctx = layers[currentCanvas].getContext('2d');
+    document.getElementById("currentLayerDisplay").innerHTML = currentCanvas;
+    document.getElementById("layersDisplay").innerHTML = layers.length;
+    
+    layers[currentCanvas].addEventListener("mousemove", function (e) {
+        findxy('move', e)
+    }, false);
+    layers[currentCanvas].addEventListener("mousedown", function (e) {
+        findxy('down', e)
+    }, false);
+    layers[currentCanvas].addEventListener("mouseup", function (e) {
+        findxy('up', e)
+    }, false);
+    layers[currentCanvas].addEventListener("mouseout", function (e) {
+        findxy('out', e)
+    }, false);
+    console.log("changed canvas context");
 }
 
-function color(obj) {
-    inputcolor.addEventListener('input', (event) => {
 
-        const colorValue = event.target.value;
-        x = colorValue;
-    }), false;
-
-
-    if (obj.id == "white") {
-        x = "white";
-
-    }
-    if (obj.id == "colorDisplay") {
-        x = color.value
-    }
-
-    if (x == "white") y = 14;
-    else y = 2;
-
+function color()
+{
+    x = colorValue;
 }
 
-function erase() {
-
-    ctx.clearRect(0, 0, w, h);
-    document.getElementById("canvasimg").style.display = "none";
-
+function SetTool(obj) {
+    tool = obj.id
 }
+
 
 function save() {
     document.getElementById("canvasimg").style.border = "2px solid";
@@ -95,18 +147,25 @@ function save() {
     document.getElementById("canvasimg").style.display = "inline";
 }
 
+
+function erase() {
+
+    ctx.clearRect(0, 0, w, h);
+    document.getElementById("canvasimg").style.display = "none";
+
+}
+
 function findxy(res, e) {
     if (res == 'down') {
         isDrawing = true;
-        prevMouseX = e.offsetX;
-        prevMouseY = e.offsetY;
         if (isDrawing) {
             ctx.beginPath();
             ctx.lineWidth = y;
             ctx.strokeStyle = x;
             ctx.fillStyle = x;
+            ctx.moveTo(e.offsetX, e.offsetY);
 
-            snapshot = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    snapshot = ctx.getImageData(0, 0, layers[currentCanvas].width, layers[currentCanvas].height);
         }
     }
     if (res == 'up') {
@@ -114,52 +173,79 @@ function findxy(res, e) {
     }
     if (res == 'move') {
         if (isDrawing) {
-            ctx.putImageData(snapshot, 0, 0);
+            switch(tool)
+            {
+                case "pen":
+                    pen(ctx, e, snapshot);
+                    break;
+                case "eraser":
+                    eraser(ctx, e, snapshot);
+                    break;
+            //    case "airbrush":
+            //         shadowbrush(ctx,e,snapshot,y,x);
+            //    break;
 
-            ctx.strokeStyle = x
-            ctx.lineTo(e.offsetX, e.offsetY);
-            ctx.stroke();
-
-            // paintStrokes.push(ctx.stroke());
-
-            // if (paintStrokes.length > 1499)
-            // {
-            //     paintStrokes.pop(0);
-            //     console.log(paintStrokes);
-            // }
+            }
         }
+        prevMouseX = e.offsetX;
+        prevMouseY = e.offsetY;
     }
 }
+
+function ImportImage()
+{
+    addLayer();
+    ctx = layers[currentCanvas - 1].getContext("2d");
+    imageInput.addEventListener("change", (event) => {
+        // Get the selected file
+        const file = event.target.files[0];
+        
+        if (file) {
+            const reader = new FileReader();
+    
+            // When the file is loaded
+            reader.onload = (e) => {
+                const img = new Image(); // Create a new Image object
+                img.src = e.target.result; // Set the source to the file's data URL
+    
+                img.onload = () => {
+                    // Draw the image onto the canvas
+                    
+                    ctx.drawImage(img, 10, 10); // Draw image
+                };
+            };
+    
+           // ctx.putImageData(snapshot, 0, 0);
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // layers[currentCanvas - 1].addEventListener("mousedown", function (e) {
+    //     ctx.drawImage(img.value,e.offsetX,e.offsetY);
+    // }, false);
+}
+
+
 
 function updateCustomColor() {
     const colorPicker = document.getElementById("custom");
     const colorDisplay = document.getElementById("colorDisplay");
-    colorDisplay.style.backgroundColor = colorPicker.value;
+    x = colorPicker.value;
 }
-
-function Caligraphy() {
-    ctx.beginPath();
-
-    for (let i = 0; i < 5; i++) {
-        ctx.moveTo(prevX - i, prevY - i);
-        ctx.lineTo(currX - i, currY - i);
-    }
-    ctx.strokeStyle = x;
-    ctx.lineWidth = y;
-    ctx.strokeSize = y;
-    ctx.stroke();
-    ctx.closePath();
-}
-
 
 function strokeSize() {
     const slider = document.getElementById("slider");
     y = slider.value;
 }
 
+function shadowAmount() 
+{
+    const shadowSlider = document.getElementById("shadowSlider");
+    shadowAmount = shadowSlider.value;
+}
+
 
 function HotKeys() {
-
     document.addEventListener('keydown', function (event) {
         if (event.ctrlKey && event.key === 'z') {
 
@@ -167,7 +253,7 @@ function HotKeys() {
 
             event.preventDefault();
 
-            // paintStrokes.shift();
+            paintStrokes[currentStroke - 1];
 
             console.log('Ctrl+Z pressed!');
         }
