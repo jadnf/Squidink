@@ -17,10 +17,6 @@ var colorValue,tool="pen";
 var paintStrokes = [];
 var layers = [];
 
-var canvasOffset=$("#can").offset();
-var offsetX = canvasOffset.left;
-var offsetY = canvasOffset.top;
-
 
 var x = "black",
     y = 2;
@@ -114,6 +110,12 @@ function save() {
     document.getElementById("canvasimg").src = dataURL;
     document.getElementById("canvasimg").style.display = "inline";
 }
+function erase() {
+
+    ctx.clearRect(0, 0, w, h);
+    document.getElementById("canvasimg").style.display = "none";
+
+}
 
 function findxy(res, e) {
     if (res == 'down') {
@@ -136,7 +138,7 @@ function findxy(res, e) {
             {
                 ctx.globalCompositeOperation="source-over";  
                 ctx.putImageData(snapshot, 0, 0);
-                ctx.arc(prevMouseX,prevMouseY,y,0,Math.PI*2,false);
+                ctx.arc(prevX,prevY,y,0,Math.PI*2,false);
                 ctx.moveTo(e.offsetX, e.offsetY);
                 ctx.stroke();
                 ctx.fill();
@@ -145,13 +147,13 @@ function findxy(res, e) {
             {
                 ctx.globalCompositeOperation="destination-out";
                 ctx.putImageData(snapshot, 0, 0);
-                ctx.arc(prevMouseX,prevMouseY,8,0,Math.PI*2,false);
+                ctx.arc(prevX,prevY,8,0,Math.PI*2,false);
                 ctx.moveTo(e.offsetX, e.offsetY);
                 ctx.stroke();
                 ctx.fill();
             }
-            prevMouseX = e.offsetX;
-            prevMouseY = e.offsetY;
+            prevX = e.offsetX;
+            prevY = e.offsetY;
         }
     }
 }
