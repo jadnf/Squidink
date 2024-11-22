@@ -14,7 +14,7 @@ body{
 }
 
 
-#WorkSpace{
+#canvases{
    
     grid-column: 1/13;
     grid-row:1/11;
@@ -49,16 +49,19 @@ body{
     padding-bottom: 20px;
 }
 
-#can1{
-    width: 1400;
-    height: 1400;
-    position:relative;
+.Canvas{
+    width: 800;
+    height: 400;
+    position:absolute;
     top:10%;
     bottom: 10%;
     right: 10%;
     left: 10%;
-    border: 2px black solid;
+    
+}
+#BackgroundCanvas{
     background-color: white;
+    
 }
 #canvasimg{
     position:static;

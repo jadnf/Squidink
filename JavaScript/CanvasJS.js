@@ -1,38 +1,37 @@
-
-
 var canvas, ctx, flag = false,
     prevX = 0,
     currX = 0,
     prevY = 0,
     currY = 0,
-    canvasWidth = 400,
-    canvasHeight = 400,
-    currentCanvas = 1,
-    canvasStyle,
-    dot_flag = false,
+    w,
+    h,
+    currentCanvas,
+    canvasStyle;
+    dot_flag = false;
     isDrawing = false;
 
 const inputcolor = document.getElementById('custom');
+
+var colorValue,tool="pen";
+
 var paintStrokes = [];
 var layers = [];
-var colorValue;
+
 
 var x = "black",
     y = 2;
 
 function init() {
-    canvas = document.getElementById('can1');
-    
-    canvasStyle = document.getElementById('can1');
+    canvas = document.getElementById('BackgroundCanvas');
     HotKeys();
 
-    w = canvas.width;
-    h = canvas.height;
+    
+   // document.getElementById("canvases").width = canvas.width;
+    //document.getElementById("canvases").height = canvas.height;
+
     layers.push(canvas);
     
-    currentCanvas = 1;
-    w = layers[currentCanvas - 1].width;
-    h = layers[currentCanvas - 1].height;
+    currentCanvas = 0;
     changeCurrentCanvasContext();
     ctx.fillStyle = "white";
     //ctx.fillRect(0, 0, w, h);
@@ -41,58 +40,66 @@ function init() {
 }
 function addLayer() {
     var newCanvas = document.createElement('canvas');
-    newCanvas.width = canvasWidth;
-    newCanvas.height = canvasHeight;
+    newCanvas.width = canvas.width;
+    newCanvas.height = canvas.height;
+    newCanvas.className = "Canvas"
     newCanvas.id = 'can' + (layers.length + 1);
-    newCanvas.style = canvasStyle;
+    //newCanvas.style = `position:absolute;width:${w};height:${h};top:0;left:0;z-index:${layers.length + 1};`;
+ //   newCanvas.style.position = "relative";
+  //  newCanvas.width = canvas.width;
+    //newCanvas.height = canvas.height;
+    //newCanvas.style.top = canvas.style.top;
+   // newCanvas.style.left = canvas.style.left;
+    //newCanvas.style.zIndex = (layers.length + 1)+"";
     layers.push(newCanvas);
     document.getElementById("layersDisplay").innerHTML = layers.length;
     document.getElementById("canvases").append(layers[layers.length-1]);
+    console.log(newCanvas.style.zIndex);
 }
 function changeCurrentLayer(direction) {
-    if (direction = 'up') {
-        currentCanvas++;
-    } else if (direction = 'down') {
-        currentCanvas--;
+    if (direction == 'up' && (currentCanvas + 1) < layers.length) {
+        currentCanvas += 1;
+        
+    } else if (direction == 'down' && (currentCanvas + 1) > 1){
+        currentCanvas -= 1;
+        
     }
     changeCurrentCanvasContext();
     
 }
 function changeCurrentCanvasContext() {
-    ctx = layers[currentCanvas - 1].getContext('2d');
-    document.getElementById("currentLayerDisplay").innerHTML = currentCanvas;
+    ctx = layers[currentCanvas].getContext('2d');
+    document.getElementById("currentLayerDisplay").innerHTML = currentCanvas+1;
     document.getElementById("layersDisplay").innerHTML = layers.length;
     
-    layers[currentCanvas - 1].addEventListener("mousemove", function (e) {
+    layers[currentCanvas].addEventListener("mousemove", function (e) {
         findxy('move', e)
     }, false);
-    layers[currentCanvas - 1].addEventListener("mousedown", function (e) {
+    layers[currentCanvas].addEventListener("mousedown", function (e) {
         findxy('down', e)
     }, false);
-    layers[currentCanvas - 1].addEventListener("mouseup", function (e) {
+    layers[currentCanvas].addEventListener("mouseup", function (e) {
         findxy('up', e)
     }, false);
-    layers[currentCanvas - 1].addEventListener("mouseout", function (e) {
+    layers[currentCanvas].addEventListener("mouseout", function (e) {
         findxy('out', e)
     }, false);
     console.log("changed canvas context");
 }
 
+
+
 function color(obj) {
     
-
-
     if (obj.id == "white") {
-        x = "white";
-
+        //x = "white";
+        tool = "eraser";
     }
     if (obj.id == "colorDisplay") {
         x = colorValue
         strokeSize();
+        tool = "pen";
     }
-
-    if (x == "white") y = 14;
-    else y = 2;
 
 }
 
@@ -103,19 +110,23 @@ function save() {
     document.getElementById("canvasimg").src = dataURL;
     document.getElementById("canvasimg").style.display = "inline";
 }
+function erase() {
+
+    ctx.clearRect(0, 0, w, h);
+    document.getElementById("canvasimg").style.display = "none";
+
+}
 
 function findxy(res, e) {
     if (res == 'down') {
         isDrawing = true;
-        prevMouseX = e.offsetX;
-        prevMouseY = e.offsetY;
         if (isDrawing) {
             ctx.beginPath();
             ctx.lineWidth = y;
             ctx.strokeStyle = x;
             ctx.fillStyle = x;
 
-    snapshot = ctx.getImageData(0, 0, layers[currentCanvas - 1].width, layers[currentCanvas - 1].height);
+    snapshot = ctx.getImageData(0, 0, layers[currentCanvas].width, layers[currentCanvas].height);
         }
     }
     if (res == 'up') {
@@ -123,19 +134,26 @@ function findxy(res, e) {
     }
     if (res == 'move') {
         if (isDrawing) {
-            ctx.putImageData(snapshot, 0, 0);
-
-            ctx.strokeStyle = x
-            ctx.lineTo(e.offsetX, e.offsetY);
-            ctx.stroke();
-
-            // paintStrokes.push(ctx.stroke());
-
-            // if (paintStrokes.length > 1499)
-            // {
-            //     paintStrokes.pop(0);
-            //     console.log(paintStrokes);
-            // }
+            if(tool == "pen")
+            {
+                ctx.globalCompositeOperation="source-over";  
+                ctx.putImageData(snapshot, 0, 0);
+                ctx.arc(prevX,prevY,y,0,Math.PI*2,false);
+                ctx.moveTo(e.offsetX, e.offsetY);
+                ctx.stroke();
+                ctx.fill();
+            }
+            if(tool == "eraser")
+            {
+                ctx.globalCompositeOperation="destination-out";
+                ctx.putImageData(snapshot, 0, 0);
+                ctx.arc(prevX,prevY,8,0,Math.PI*2,false);
+                ctx.moveTo(e.offsetX, e.offsetY);
+                ctx.stroke();
+                ctx.fill();
+            }
+            prevX = e.offsetX;
+            prevY = e.offsetY;
         }
     }
 }
@@ -143,29 +161,10 @@ function findxy(res, e) {
 function updateCustomColor() {
     const colorPicker = document.getElementById("custom");
     const colorDisplay = document.getElementById("colorDisplay");
-    colorDisplay.style.backgroundColor = colorPicker.value;
+    x = colorPicker.value;
 }
 
 
-function erase() {
-    ctx.clearRect(0, 0, w, h);
-    document.getElementById("canvasimg").style.display = "none";
-}
-
-
-function Caligraphy() {
-    ctx.beginPath();
-
-    for (let i = 0; i < 5; i++) {
-        ctx.moveTo(prevX - i, prevY - i);
-        ctx.lineTo(currX - i, currY - i);
-    }
-    ctx.strokeStyle = x;
-    ctx.lineWidth = y;
-    ctx.strokeSize = y;
-    ctx.stroke();
-    ctx.closePath();
-}
 
 function strokeSize() {
     const slider = document.getElementById("slider");

@@ -11,8 +11,11 @@
 <body onload="init()">
 
     <div id="gridContaner">
-        <div id="WorkSpace" class="Grid_item">
-            <canvas id="can1"></canvas>
+        <div id="canvases" class="Grid_item">
+            
+                <canvas id="BackgroundCanvas" id="can1" class="Canvas"></canvas>
+
+            
         </div>
         <div id="ToolBar" class="Grid_item">
 
@@ -48,6 +51,9 @@
                     <!-- Set to layer selection instead of up or down a layer -->
                     <input type="button" value="Up layer" id="UpLayer" onclick="changeCurrentLayer('up')">
                     <input type="button" value="Down layer" id="DownLayer" onclick="changeCurrentLayer('down')">
+
+                    <h4><span id="currentLayerDisplay"></span></h4>
+                    <h4><span id="layersDisplay"></span></h4>
                 </div>
 
             </div>
