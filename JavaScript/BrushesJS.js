@@ -27,4 +27,5 @@ function shadowbrush(ctx,e,snapshot, y, x)
     ctx.shadowColor = x;
     ctx.lineTo(e.offsetX, e.offsetY);
     ctx.stroke();
+    
 }
