@@ -237,7 +237,9 @@ function HotKeys() {
         if (event.key == 'e') {
 
             event.preventDefault();
-            eraser();
+            SetTool("eraser");
+
+            console.log('E pressed!');
         } 
     });
 
@@ -245,7 +247,9 @@ function HotKeys() {
        if (event.key == 'p') {
 
         event.preventDefault();
-        pen();
+        SetTool("pen");
+
+        console.log('P pressed!');
        } 
     });
 }
