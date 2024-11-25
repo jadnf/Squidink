@@ -50,9 +50,8 @@ body{
 }
 
 .Canvas{
-    width: 400;
-    height: 400;
-    position:absolute;
+   
+    position:relative;
     top:10%;
     bottom: 10%;
     right: 10%;
@@ -60,6 +59,7 @@ body{
     
 }
 #BackgroundCanvas{
+    
     background-color: white;
     
 }
