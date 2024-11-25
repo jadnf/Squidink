@@ -96,22 +96,13 @@ function changeCurrentCanvasContext() {
     }, false);
 }
 
-function color(obj) {
-    
+function color()
+{
+    x = colorValue;
+}
 
-
-    if (obj.id == "white") {
-        x = "white";
-
-    }
-    if (obj.id == "colorDisplay") {
-        x = colorValue
-        strokeSize();
-    }
-
-    if (x == "white") y = 14;
-    else y = 2;
-
+function SetTool(obj) {
+    tool = obj.id
 }
 
 
