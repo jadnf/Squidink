@@ -1,5 +1,3 @@
-
-
 var canvas, ctx, flag = false,
     prevX = 0,
     currX = 0,
@@ -113,16 +111,23 @@ function save() {
     document.getElementById("canvasimg").style.display = "inline";
 }
 
+
+function erase() {
+
+    ctx.clearRect(0, 0, w, h);
+    document.getElementById("canvasimg").style.display = "none";
+
+}
+
 function findxy(res, e) {
     if (res == 'down') {
         isDrawing = true;
-        prevMouseX = e.offsetX;
-        prevMouseY = e.offsetY;
         if (isDrawing) {
             ctx.beginPath();
             ctx.lineWidth = y;
             ctx.strokeStyle = x;
             ctx.fillStyle = x;
+            ctx.moveTo(e.offsetX, e.offsetY);
 
     snapshot = ctx.getImageData(0, 0, layers[currentCanvas].width, layers[currentCanvas].height);
         }
@@ -132,37 +137,59 @@ function findxy(res, e) {
     }
     if (res == 'move') {
         if (isDrawing) {
-            ctx.putImageData(snapshot, 0, 0);
-
-            ctx.strokeStyle = x
-            ctx.lineTo(e.offsetX, e.offsetY);
-            ctx.stroke();
-            if(tool == "pen")
+            switch(tool)
             {
-                ctx.globalCompositeOperation="source-over";  
-                ctx.putImageData(snapshot, 0, 0);
-                ctx.arc(prevMouseX,prevMouseY,y,0,Math.PI*2,false);
-                ctx.moveTo(e.offsetX, e.offsetY);
-                ctx.stroke();
-                ctx.fill();
-            }
-            if(tool == "eraser")
-            {
-                ctx.globalCompositeOperation="destination-out";
-                ctx.putImageData(snapshot, 0, 0);
-                ctx.arc(prevMouseX,prevMouseY,8,0,Math.PI*2,false);
-                ctx.moveTo(e.offsetX, e.offsetY);
-                ctx.stroke();
-                ctx.fill();
-            }
-            prevMouseX = e.offsetX;
-            prevMouseY = e.offsetY;
+                case "pen":
+                    pen(ctx, e, snapshot);
+                    break;
+                case "eraser":
+                    eraser(ctx, e, snapshot);
+                    break;
+            //    case "airbrush":
+            //         shadowbrush(ctx,e,snapshot,y,x);
+            //    break;
 
-            // actionHistory.push({ type: 'line', x1: prevX, y1: prevY, x2: e.clientX, y2: e.clientY });
-            // redoHistory = []; // Clear redo history
+            }
         }
+        prevMouseX = e.offsetX;
+        prevMouseY = e.offsetY;
     }
 }
+
+function ImportImage()
+{
+    addLayer();
+    ctx = layers[currentCanvas - 1].getContext("2d");
+    imageInput.addEventListener("change", (event) => {
+        // Get the selected file
+        const file = event.target.files[0];
+        
+        if (file) {
+            const reader = new FileReader();
+    
+            // When the file is loaded
+            reader.onload = (e) => {
+                const img = new Image(); // Create a new Image object
+                img.src = e.target.result; // Set the source to the file's data URL
+    
+                img.onload = () => {
+                    // Draw the image onto the canvas
+                    
+                    ctx.drawImage(img, 10, 10); // Draw image
+                };
+            };
+    
+           // ctx.putImageData(snapshot, 0, 0);
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // layers[currentCanvas - 1].addEventListener("mousedown", function (e) {
+    //     ctx.drawImage(img.value,e.offsetX,e.offsetY);
+    // }, false);
+}
+
+
 
 function updateCustomColor() {
     const colorPicker = document.getElementById("custom");
@@ -170,30 +197,15 @@ function updateCustomColor() {
     x = colorPicker.value;
 }
 
-
-function erase() {
-    ctx.clearRect(0, 0, w, h);
-    document.getElementById("canvasimg").style.display = "none";
-}
-
-
-function Caligraphy() {
-    ctx.beginPath();
-
-    for (let i = 0; i < 5; i++) {
-        ctx.moveTo(prevX - i, prevY - i);
-        ctx.lineTo(currX - i, currY - i);
-    }
-    ctx.strokeStyle = x;
-    ctx.lineWidth = y;
-    ctx.strokeSize = y;
-    ctx.stroke();
-    ctx.closePath();
-}
-
 function strokeSize() {
     const slider = document.getElementById("slider");
     y = slider.value;
+}
+
+function shadowAmount() 
+{
+    const shadowSlider = document.getElementById("shadowSlider");
+    shadowAmount = shadowSlider.value;
 }
 
 
