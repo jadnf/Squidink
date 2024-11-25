@@ -3,13 +3,13 @@ var canvas, ctx, flag = false,
     currX = 0,
     prevY = 0,
     currY = 0,
-    w,
-    h,
+   // w,
+    //h,
     currentCanvas,
-    canvasStyle,
+   // canvasStyle,
     dot_flag = false,
-    canvasWidth = 400,
-    canvasHeight = 400,
+   // canvasWidth = 400,
+   // canvasHeight = 400,
     currentCanvas = 1,
     canvasStyle,
     dot_flag = false,
@@ -35,29 +35,22 @@ var x = "black",
     y = 2;
 
 function init() {
-    canvas = document.getElementById('can1');
+    canvas = document.getElementById('BackgroundCanvas');
+    canvas.width = 1400;
+    canvas.height = 1400;
     HotKeys();
 
-    w = canvas.width;
-    h = canvas.height;
-    document.getElementById("canvases").width = w;
-    document.getElementById("canvases").height = h;
     
-        inputcolor.addEventListener('input', (event) => {
-
-        colorValue = event.target.value;
-        x = colorValue;
-        strokeSize();
-    }), false;
+   // document.getElementById("canvases").width = canvas.width;
+    //document.getElementById("canvases").height = canvas.height;
 
     layers.push(canvas);
     
-    currentCanvas = 0;
+   // currentCanvas = 0;
 
     currentStroke = 0;
     currentCanvas = 0;
-    w = layers[currentCanvas].width;
-    h = layers[currentCanvas].height;
+    
     changeCurrentCanvasContext();
     ctx.fillStyle = "white";
     //ctx.fillRect(0, 0, w, h);
@@ -80,20 +73,14 @@ function init() {
 }
 function addLayer() {
     var newCanvas = document.createElement('canvas');
-    newCanvas.width = w;
-    newCanvas.height = h;
+    newCanvas.width = canvas.width;
+    newCanvas.height = canvas.height;
+    newCanvas.className = "Canvas"
     newCanvas.id = 'can' + (layers.length + 1);
-    //newCanvas.style = `position:absolute;width:${w};height:${h};top:0;left:0;z-index:${layers.length + 1};`;
-    newCanvas.style.position = "absolute";
-    newCanvas.style.width = w+"";
-    newCanvas.style.height = h+"";
-    newCanvas.style.top = "0%";
-    newCanvas.style.left = "0%";
-    //newCanvas.style.zIndex = (layers.length + 1)+"";
     layers.push(newCanvas);
     document.getElementById("layersDisplay").innerHTML = layers.length;
     document.getElementById("canvases").append(layers[layers.length-1]);
-    console.log(newCanvas.style.zIndex);
+  //  console.log(newCanvas.style.zIndex);
 }
 function changeCurrentLayer(direction) {
     if (direction == 'up' && (currentCanvas + 1) < layers.length) {
@@ -106,9 +93,11 @@ function changeCurrentLayer(direction) {
     changeCurrentCanvasContext();
     
 }
+
+
 function changeCurrentCanvasContext() {
     ctx = layers[currentCanvas].getContext('2d');
-    document.getElementById("currentLayerDisplay").innerHTML = currentCanvas;
+    document.getElementById("currentLayerDisplay").innerHTML = currentCanvas+1;
     document.getElementById("layersDisplay").innerHTML = layers.length;
     
     layers[currentCanvas].addEventListener("mousemove", function (e) {
@@ -125,6 +114,9 @@ function changeCurrentCanvasContext() {
     }, false);
     console.log("changed canvas context");
 }
+
+
+
 
 
 function color()
@@ -196,22 +188,22 @@ function ImportImage()
     imageInput.addEventListener("change", (event) => {
         // Get the selected file
         const file = event.target.files[0];
-        
+
         if (file) {
             const reader = new FileReader();
-    
+
             // When the file is loaded
             reader.onload = (e) => {
                 const img = new Image(); // Create a new Image object
                 img.src = e.target.result; // Set the source to the file's data URL
-    
+
                 img.onload = () => {
                     // Draw the image onto the canvas
-                    
+
                     ctx.drawImage(img, 10, 10); // Draw image
                 };
             };
-    
+
            // ctx.putImageData(snapshot, 0, 0);
             reader.readAsDataURL(file);
         }

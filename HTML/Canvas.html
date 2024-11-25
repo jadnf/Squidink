@@ -4,6 +4,7 @@
 
     <title>Squidink</title>
     <link rel="stylesheet" href="../CSS/Canvas.css">
+    <script src="../JavaScript/BrushesJS.js"></script>
     <script src="../JavaScript/CanvasJS.js"></script>
 
 </head>
@@ -11,9 +12,12 @@
 <body onload="init()">
 
     <div id="gridContaner">
-        <div id="WorkSpace" class="Grid_item">
-            <canvas id="can1"></canvas>
-        </div>
+        <div id="canvases" class="Grid_item">
+            
+                <canvas id="BackgroundCanvas" id="can1" class="Canvas"></canvas>
+
+            </div>
+          <img id="canvasimg" style="position:absolute;top:10%;left:52%;" style="display:none;">
         <div id="ToolBar" class="Grid_item">
 
             <div id="Toolbar-Body">
@@ -48,6 +52,9 @@
                     <!-- Set to layer selection instead of up or down a layer -->
                     <input type="button" value="Up layer" id="UpLayer" onclick="changeCurrentLayer('up')">
                     <input type="button" value="Down layer" id="DownLayer" onclick="changeCurrentLayer('down')">
+
+                    <h4><span id="currentLayerDisplay"></span></h4>
+                    <h4><span id="layersDisplay"></span></h4>
                 </div>
 
             </div>

@@ -14,12 +14,19 @@ body{
 }
 
 
-#WorkSpace{
+#canvases{
    
     grid-column: 1/13;
     grid-row:1/11;
+    overflow: scroll;
+    
 }
 
+#CanvasBody{
+    width: 2000;
+    height:2000;
+    /*change scale based on canvas*/
+}
 #ToolBar{
     background-color: darkgray;
     border-top-left-radius: 1%;
@@ -42,14 +49,24 @@ body{
     padding-bottom: 20px;
 }
 
-#can1{
-    width: 800;
-    height: 800;
-   position: relative;
-    top: 10%;
+.Canvas{
+   
+    position:relative;
+    top:10%;
+    bottom: 10%;
+    right: 10%;
     left: 10%;
-    border: 2px black solid;
+    
+}
+#BackgroundCanvas{
+    
     background-color: white;
+    
+}
+#canvasimg{
+    position:static;
+    
+    
 }
 
 .label{
