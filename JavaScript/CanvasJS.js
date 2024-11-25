@@ -23,9 +23,6 @@ var shadowAmount;
 
 var colorValue,tool="pen";
 
-var paintStrokes = [];
-var layers = [];
-
 var canvasOffset=$("#can").offset();
 var offsetX = canvasOffset.left;
 var offsetY = canvasOffset.top;
