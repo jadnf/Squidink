@@ -1,30 +1,31 @@
-function pen(ctx, y, prevX, prevY,e,snapshot) 
+function pen(ctx, e, snapshot) 
 {
-    ctx.lineJoin = ctx.lineCap = 'round'
+    ctx.shadowBlur = 0;
+    ctx.lineJoin = ctx.lineCap = 'round';
     ctx.globalCompositeOperation="source-over";  
     ctx.putImageData(snapshot, 0, 0);
-    ctx.arc(prevX,prevY,y,0,Math.PI*2,false);
-    ctx.moveTo(e.offsetX, e.offsetY);
+    ctx.lineTo(e.offsetX, e.offsetY);
     ctx.stroke();
-    ctx.fill();
 }
 
-function eraser(ctx, y, prevX, prevY, e, snapshot)
+function eraser(ctx, e, snapshot)
 {
+    ctx.shadowBlur = 0;
+    ctx.lineJoin = ctx.lineCap = 'round';
     ctx.globalCompositeOperation="destination-out";
     ctx.putImageData(snapshot, 0, 0);
-    ctx.arc(prevMouseX,prevMouseY,8,0,Math.PI*2,false);
-    ctx.moveTo(e.offsetX, e.offsetY);
+    ctx.lineTo(e.offsetX, e.offsetY);
     ctx.stroke();
-    ctx.fill();
 }
 
-function highlighter(ctx, y, prevX, prevY, prev)
+function shadowbrush(ctx,e,snapshot, y, x)
 {
-    ctx.globalCompositeOperation="destination-out";
+    ctx.globalCompositeOperation="source-over";  
     ctx.putImageData(snapshot, 0, 0);
-    // ctx.arc(prevMouseX,prevMouseY,8,0,Math.PI*2,false);
-    // ctx.moveTo(e.offsetX, e.offsetY);
+    ctx.lineJoin = ctx.lineCap = 'round';
+    ctx.shadowBlur = y;
+    ctx.shadowColor = x;
+    ctx.lineTo(e.offsetX, e.offsetY);
     ctx.stroke();
-    // ctx.fill();
+    
 }
