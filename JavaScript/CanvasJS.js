@@ -37,8 +37,8 @@ var x = "black",
 
 function init() {
     canvas = document.getElementById('BackgroundCanvas');
-    canvas.width = 1400;
-    canvas.height = 1400;
+    canvas.width = 400;
+    canvas.height = 400;
     HotKeys();
 
     
