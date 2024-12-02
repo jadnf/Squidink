@@ -22,8 +22,8 @@ const imageInput = document.getElementById('image');
 var shadowAmount;
 
 var colorValue,tool="pen";
-let hexValue = inputcolor.value;
-x = inputcolor.value;
+// let hexValue = inputcolor.value;
+// x = inputcolor.value;
 
 var paintStrokes = [];
 var layers = [];
@@ -43,14 +43,7 @@ function init() {
     
     // document.getElementById("canvases").width = canvas.width;
     //document.getElementById("canvases").height = canvas.height;
-    inputcolor.addEventListener('input', (event) => {
-
-        colorValue = event.target.value;
-        x = colorValue;
-        hexValue = inputcolor.value;
-        strokeSize();
-    }), false;
-
+   
 
     layers.push(canvas);
     
@@ -137,10 +130,12 @@ function SetTool(obj) {
 
 
 function save() {
-    document.getElementById("canvasimg").style.border = "2px solid";
-    var dataURL = canvas.toDataURL();
-    document.getElementById("canvasimg").src = dataURL;
-    document.getElementById("canvasimg").style.display = "inline";
+    const link = document.createElement("a"); // creating <a> elemen
+    link.download = `${Date.now()}.jpg`; // passing current date as link download value
+    for(var i = 0; i < layers.length; i++) {
+    link.href = layers[i].toDataURL(); // passing canvasData as link href value
+    }
+    link.click();
 }
 
 
