@@ -13,8 +13,10 @@
 
     <div id="gridContaner">
         <div id="canvases" class="Grid_item">
-            
+           
                 <canvas id="BackgroundCanvas" id="can1" class="Canvas"></canvas>
+
+           
 
             </div>
           <img id="canvasimg" style="position:absolute;top:10%;left:52%;" style="display:none;">
@@ -24,24 +26,22 @@
                 <div id="Title">Tool Bar</div>
 
                 <div id="ColorPicker">
-                    <div class="label">Color Picker</div>
+                 
                     <input type="color" id="custom" oninput="updateCustomColor()">
 
                 </div>
-                <div id="ColorSelect">
-                    <div class="label">Tool Color</div>
-                    <div id="colorDisplay" onclick="color(this)"></div>
-                </div>
+                
 
                 <div id="BrushScale">
-                    <div class="label">Size</div>
+                    <div class="label">Brush Size</div>
                     <input type="range" min="1" max="50" value="1" id="slider" oninput="strokeSize()">
 
                 </div>
 
                 <div id="Tools">
                     <div class="label">Tools</div>
-                    <div id="Eraser" onclick="color(this)"></div>
+                    <!--Not currently working-->
+                    <div  id="eraser" onclick="SetTool(this)"></div>
 
                 </div>
                 <div id="CanvasMods">

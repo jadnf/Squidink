@@ -3,13 +3,9 @@ var canvas, ctx, flag = false,
     currX = 0,
     prevY = 0,
     currY = 0,
-   // w,
-    //h,
+
     currentCanvas,
-   // canvasStyle,
     dot_flag = false,
-   // canvasWidth = 400,
-   // canvasHeight = 400,
     currentCanvas = 1,
     canvasStyle,
     dot_flag = false,
@@ -37,24 +33,16 @@ var x = "black",
 
 function init() {
     canvas = document.getElementById('BackgroundCanvas');
-    canvas.width = 400;
-    canvas.height = 400;
+    canvas.width = 505;
+    canvas.height = 505;
     HotKeys();
-
-    
-   // document.getElementById("canvases").width = canvas.width;
-    //document.getElementById("canvases").height = canvas.height;
-
     layers.push(canvas);
-    
-   // currentCanvas = 0;
-
     currentStroke = 0;
     currentCanvas = 0;
     
     changeCurrentCanvasContext();
     ctx.fillStyle = "white";
-    //ctx.fillRect(0, 0, w, h);
+    
 
     changeCurrentCanvasContext();
 
@@ -81,7 +69,7 @@ function addLayer() {
     layers.push(newCanvas);
     document.getElementById("layersDisplay").innerHTML = layers.length;
     document.getElementById("canvases").append(layers[layers.length-1]);
-  //  console.log(newCanvas.style.zIndex);
+ 
 }
 function changeCurrentLayer(direction) {
     if (direction == 'up' && (currentCanvas + 1) < layers.length) {
@@ -140,7 +128,7 @@ function save() {
 
 function erase() {
 
-    ctx.clearRect(0, 0, w, h);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     document.getElementById("canvasimg").style.display = "none";
 
 }

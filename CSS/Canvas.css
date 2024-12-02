@@ -1,6 +1,6 @@
 
 body{
-    background-color: lightgray;
+    background-color: darkgray;
     margin: 0;
 }
 
@@ -22,18 +22,13 @@ body{
     
 }
 
-#CanvasBody{
-    width: 2000;
-    height:2000;
-    /*change scale based on canvas*/
-}
+
 #ToolBar{
-    background-color: darkgray;
-    border-top-left-radius: 1%;
-    border-bottom-left-radius: 1%;
+    background-color: gray;
+  
     grid-column: 13/16;
     grid-row: 1/11;
-   
+  
 }
 
 #Toolbar-Body{
@@ -49,18 +44,22 @@ body{
     padding-bottom: 20px;
 }
 
+
+
 .Canvas{
    
-    position:absolute;
-    top:10%;
-    bottom: 10%;
-    right: 10%;
-    left: 10%;
+ position:absolute;
+    top:20px;
+    bottom: 50px;
+    right: 50px;
+    left: 35px;
     
 }
+
 #BackgroundCanvas{
     
     background-color: white;
+  
     
 }
 #canvasimg{
@@ -81,7 +80,7 @@ body{
     --l: 5px; /* line thickness*/
     --s: 20px; /* thumb size*/
   
-    width: 200px; /* input width */
+    width: 50%; /* input width */
     height: var(--s);
     appearance :none;
     cursor: pointer;
@@ -104,24 +103,23 @@ body{
   #custom{
   background: none;
   appearance: none;
+  border:none;
   padding:0;
- border:none;
-  height: 50px;
+
+  height: 40px;
+  width: 80%;
   cursor:pointer;
-  border-width: 2px;
+  border-radius: 25px;
+ 
+
   }
 
-  #colorDisplay{
-    width:30px;
-    height:30px;
-    position:relative;
-    border:1px solid #000;
-  }
+
 
   #Tools{
     margin-bottom: 8px;
   }
-  #Eraser{
+  #eraser{
     width:15px;height:15px;
     background:white;
     border:2px solid;
