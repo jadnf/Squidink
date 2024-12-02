@@ -22,11 +22,6 @@ const imageInput = document.getElementById('image');
 var shadowAmount;
 
 var colorValue,tool="pen";
-
-var canvasOffset=$("#can").offset();
-var offsetX = canvasOffset.left;
-var offsetY = canvasOffset.top;
-
 let actionHistroy = [];
 let redoHistory = [];
 var layers = [];
@@ -135,7 +130,7 @@ function save() {
 
 function erase() {
 
-    ctx.clearRect(0, 0, w, h);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     document.getElementById("canvasimg").style.display = "none";
 
 }
