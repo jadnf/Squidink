@@ -1,6 +1,8 @@
 
 var rgbaColor, lastPoint;
 var points = [];
+var clientX, clientY, timeout;
+
 
 
 function distanceBetween(point1, point2) 
@@ -112,10 +114,45 @@ function caligraphyPen(ctx,e,prevX,prevY, size)
     ctx.stroke();
 }
 
+function fun(ctx, e, hex)
+{
+  ctx.lineWidth = 1;
+  points.push({ x: e.offsetX, y: e.offsetY });
+  ctx.beginPath();
+  ctx.moveTo(points[points.length - 2].x, points[points.length - 2].y);
+  ctx.lineTo(points[points.length - 1].x, points[points.length - 1].y);
+  ctx.stroke();
+  
+  for (var i = 0, len = points.length; i < len; i++) {
+    dx = points[i].x - points[points.length-1].x;
+    dy = points[i].y - points[points.length-1].y;
+    d = dx * dx + dy * dy;
+
+    if (d < 1000) {
+      ctx.beginPath();
+      ctx.strokeStyle = convertToRGBA(hex, 0.3);
+      ctx.moveTo( points[points.length-1].x + (dx * 0.2), points[points.length-1].y + (dy * 0.2));
+      ctx.lineTo( points[i].x - (dx * 0.2), points[i].y - (dy * 0.2));
+      ctx.stroke();
+    }
+  }
+    
+}
 
 
-// 
 
+
+function airBrush(ctx, e,size)
+{
+    var density = size * 2;
+    ctx.moveTo(e.offsetX, e.offsetY);
+    for (var i = density; i--; ) {
+        var radius = size;
+        var offsetX = getRandomInt(-radius, radius);
+        var offsetY = getRandomInt(-radius, radius);
+        ctx.fillRect(e.offsetX + offsetX, e.offsetY + offsetY, 1, 1);
+    }
+}
 
 
 

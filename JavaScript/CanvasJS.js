@@ -162,7 +162,9 @@ function findxy(res, e) {
                     //shadowbrush(ctx,e,prevMouseX,prevMouseY,String(hexValue),size);
                     
                     //fountainPen(ctx, e, snapshot);
-                    caligraphyPen(ctx,e,prevMouseX,prevMouseY,size);
+                    //caligraphyPen(ctx,e,prevMouseX,prevMouseY,size);
+                    //fun(ctx,e,String(hexValue));
+                    airBrush(ctx,e,size);
                break;
 
             }
