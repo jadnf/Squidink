@@ -41,12 +41,12 @@ function init() {
     HotKeys();
 
     
-   // document.getElementById("canvases").width = canvas.width;
+    // document.getElementById("canvases").width = canvas.width;
     //document.getElementById("canvases").height = canvas.height;
 
     layers.push(canvas);
     
-   // currentCanvas = 0;
+    currentCanvas = 0;
 
     currentStroke = 0;
     currentCanvas = 0;
@@ -71,6 +71,7 @@ function init() {
         findxy('out', e)
     }, false);
 }
+
 function addLayer() {
     var newCanvas = document.createElement('canvas');
     newCanvas.width = canvas.width;
@@ -82,6 +83,7 @@ function addLayer() {
     document.getElementById("canvases").append(layers[layers.length-1]);
   //  console.log(newCanvas.style.zIndex);
 }
+
 function changeCurrentLayer(direction) {
     if (direction == 'up' && (currentCanvas + 1) < layers.length) {
         currentCanvas += 1;
@@ -91,9 +93,7 @@ function changeCurrentLayer(direction) {
         
     }
     changeCurrentCanvasContext();
-    
 }
-
 
 function changeCurrentCanvasContext() {
     ctx = layers[currentCanvas].getContext('2d');
@@ -114,10 +114,6 @@ function changeCurrentCanvasContext() {
     }, false);
     console.log("changed canvas context");
 }
-
-
-
-
 
 function color()
 {
@@ -154,6 +150,7 @@ function findxy(res, e) {
             ctx.fillStyle = x;
             ctx.moveTo(e.offsetX, e.offsetY);
 
+            actionHistroy = layers;
     snapshot = ctx.getImageData(0, 0, layers[currentCanvas].width, layers[currentCanvas].height);
         }
     }
@@ -173,7 +170,6 @@ function findxy(res, e) {
             //    case "airbrush":
             //         shadowbrush(ctx,e,snapshot,y,x);
             //    break;
-
             }
         }
         prevMouseX = e.offsetX;
@@ -242,7 +238,10 @@ function HotKeys() {
 
             event.preventDefault();
 
-            paintStrokes[currentStroke - 1];
+            // if (actionHistroy.length > 0)
+            // {
+            //     actionHistroy = 
+            // }
 
             console.log('Ctrl+Z pressed!');
         }
@@ -255,7 +254,7 @@ function HotKeys() {
 
             event.preventDefault();
 
-            // Do something when Ctrl+S is pressed
+            // Do something when Ctrl+Yis pressed
 
 
 
@@ -268,5 +267,21 @@ function HotKeys() {
             event.preventDefault();
             erase();
         }
+    });
+
+    document.addEventListener('keydown', function (event) {
+        if (event.key == 'e') {
+
+            event.preventDefault();
+            tool = "eraser";
+        } 
+    });
+
+    document.addEventListener('keydown', function (event) {
+       if (event.key == 'p') {
+
+        event.preventDefault();
+        tool = "pen";
+       } 
     });
 }
