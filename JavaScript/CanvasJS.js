@@ -3,15 +3,23 @@ var canvas, ctx, flag = false,
     currX = 0,
     prevY = 0,
     currY = 0,
-    canvasWidth = 400,
-    canvasHeight = 400,
-    currentCanvas = 0,
-    currentStroke = 0,
+    w,
+    h,
+    currentCanvas,
     canvasStyle,
     dot_flag = false,
-    isDrawing = false;
+    canvasWidth = 400,
+    canvasHeight = 400,
+    currentCanvas = 1,
+    canvasStyle,
+    dot_flag = false,
+    isDrawing = false,
+    img, 
+    snapshot;
 
 const inputcolor = document.getElementById('custom');
+const imageInput = document.getElementById('image');
+var shadowAmount;
 
 var colorValue,tool="pen";
 
@@ -24,13 +32,23 @@ var x = "black",
 
 function init() {
     canvas = document.getElementById('can1');
-    
-    canvasStyle = document.getElementById('can1');
     HotKeys();
 
     w = canvas.width;
     h = canvas.height;
+    document.getElementById("canvases").width = w;
+    document.getElementById("canvases").height = h;
+    
+        inputcolor.addEventListener('input', (event) => {
+
+        colorValue = event.target.value;
+        x = colorValue;
+        strokeSize();
+    }), false;
+
     layers.push(canvas);
+    
+    currentCanvas = 0;
 
     currentStroke = 0;
     currentCanvas = 0;
@@ -56,25 +74,36 @@ function init() {
         findxy('out', e)
     }, false);
 }
+
 function addLayer() {
     var newCanvas = document.createElement('canvas');
-    newCanvas.width = canvasWidth;
-    newCanvas.height = canvasHeight;
+    newCanvas.width = w;
+    newCanvas.height = h;
     newCanvas.id = 'can' + (layers.length + 1);
-    newCanvas.style = canvasStyle;
+    //newCanvas.style = `position:absolute;width:${w};height:${h};top:0;left:0;z-index:${layers.length + 1};`;
+    newCanvas.style.position = "absolute";
+    newCanvas.style.width = w+"";
+    newCanvas.style.height = h+"";
+    newCanvas.style.top = "0%";
+    newCanvas.style.left = "0%";
+    //newCanvas.style.zIndex = (layers.length + 1)+"";
     layers.push(newCanvas);
     document.getElementById("layersDisplay").innerHTML = layers.length;
     document.getElementById("canvases").append(layers[layers.length-1]);
+    console.log(newCanvas.style.zIndex);
 }
+
 function changeCurrentLayer(direction) {
-    if (direction = 'up') {
-        currentCanvas++;
-    } else if (direction = 'down') {
-        currentCanvas--;
+    if (direction == 'up' && (currentCanvas + 1) < layers.length) {
+        currentCanvas += 1;
+        
+    } else if (direction == 'down' && (currentCanvas + 1) > 1){
+        currentCanvas -= 1;
+        
     }
     changeCurrentCanvasContext();
-    
 }
+
 function changeCurrentCanvasContext() {
     ctx = layers[currentCanvas].getContext('2d');
     document.getElementById("currentLayerDisplay").innerHTML = currentCanvas;
@@ -92,6 +121,7 @@ function changeCurrentCanvasContext() {
     layers[currentCanvas].addEventListener("mouseout", function (e) {
         findxy('out', e)
     }, false);
+    console.log("changed canvas context");
 }
 
 function color()
@@ -129,6 +159,7 @@ function findxy(res, e) {
             ctx.fillStyle = x;
             ctx.moveTo(e.offsetX, e.offsetY);
 
+            actionHistroy = layers;
     snapshot = ctx.getImageData(0, 0, layers[currentCanvas].width, layers[currentCanvas].height);
         }
     }
@@ -148,11 +179,12 @@ function findxy(res, e) {
             //    case "airbrush":
             //         shadowbrush(ctx,e,snapshot,y,x);
             //    break;
-
+                
             }
         }
         prevMouseX = e.offsetX;
         prevMouseY = e.offsetY;
+
     }
 }
 
@@ -217,7 +249,10 @@ function HotKeys() {
 
             event.preventDefault();
 
-            //paintStrokes[currentStroke - 1];
+            // if (actionHistroy.length > 0)
+            // {
+            //     actionHistroy = 
+            // }
 
             console.log('Ctrl+Z pressed!');
         }
@@ -249,9 +284,7 @@ function HotKeys() {
         if (event.key == 'e') {
 
             event.preventDefault();
-            SetTool("eraser");
-
-            console.log('E pressed!');
+            tool = "eraser";
         } 
     });
 
@@ -259,9 +292,7 @@ function HotKeys() {
        if (event.key == 'p') {
 
         event.preventDefault();
-        SetTool("pen");
-
-        console.log('P pressed!');
+        tool = "pen";
        } 
     });
 }
