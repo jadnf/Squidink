@@ -20,10 +20,12 @@ const imageInput = document.getElementById('image');
 var shadowAmount;
 
 var colorValue,tool="pen";
+let hexValue = inputcolor.value;
+x = inputcolor.value;
 
 var paintStrokes = [];
 var layers = [];
-
+var size = 2;
 let actionHistroy = [];
 let redoHistory = [];
 
@@ -43,6 +45,7 @@ function init() {
 
         colorValue = event.target.value;
         x = colorValue;
+        hexValue = inputcolor.value;
         strokeSize();
     }), false;
 
@@ -125,7 +128,10 @@ function changeCurrentCanvasContext() {
 
 function color()
 {
-    x = colorValue;
+    colorValue.addEventListener("input", function () {
+        hexValue = colorValue.value
+        x = colorValue.value;
+    });
 }
 
 function SetTool(obj) {
@@ -166,6 +172,7 @@ function findxy(res, e) {
     }
     if (res == 'move') {
         if (isDrawing) {
+            
             switch(tool)
             {
                 case "pen":
@@ -173,9 +180,15 @@ function findxy(res, e) {
                     break;
                 case "eraser":
                     eraser(ctx, e, snapshot);
+                    y = 10;
                     break;
                case "airbrush":
-                    shadowbrush(ctx,e,snapshot,y,x);
+                    //shadowbrush(ctx,e,prevMouseX,prevMouseY,String(hexValue),size);
+                    
+                    //fountainPen(ctx, e, snapshot);
+                    //caligraphyPen(ctx,e,prevMouseX,prevMouseY,size);
+                    //fun(ctx,e,String(hexValue));
+                    airBrush(ctx,e,size);
                break;
 
             }
@@ -229,6 +242,7 @@ function updateCustomColor() {
 function strokeSize() {
     const slider = document.getElementById("slider");
     y = slider.value;
+    size = slider.value;
 }
 
 function shadowAmount() 
@@ -242,7 +256,7 @@ function HotKeys() {
     document.addEventListener('keydown', function (event) {
         if (event.ctrlKey && event.key === 'z') {
 
-            // Prevent the default browser save action
+            // Prevent the default browser save action\
 
             event.preventDefault();
 
