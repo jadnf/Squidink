@@ -38,8 +38,6 @@ function eraser(ctx, e, snapshot)
 
 function shadowbrush(ctx,e,prevX, prevY, hex,size)
 {
-    var sizeOne = size ;
-    var sizeTwo = size / 20;
     var lastPoint = {x: prevX, y: prevY}
     var currentPoint = { x: e.offsetX, y: e.offsetY};
     var dist = distanceBetween(lastPoint, currentPoint);
