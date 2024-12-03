@@ -32,7 +32,7 @@ let actionHistroy = [];
 let redoHistory = [];
 
 var x = "black",
-    y;
+    y, hexValue;
 
 strokeSize();
 
@@ -46,7 +46,6 @@ function init() {
     
     // document.getElementById("canvases").width = canvas.width;
     //document.getElementById("canvases").height = canvas.height;
-   
 
     layers.push(canvas);
     
@@ -119,13 +118,6 @@ function changeCurrentCanvasContext() {
     console.log("changed canvas context");
 }
 
-function cozlor()
-{
-    colorValue.addEventListener("input", function () {
-        hexValue = colorValue.value
-        x = colorValue.value;
-    });
-}
 
 function SetTool(obj) {
     tool = obj.id
@@ -177,14 +169,21 @@ function findxy(res, e) {
                 case "eraser":
                     eraser(ctx, e, snapshot);
                     break;
-               case "airbrush":
-                    //shadowbrush(ctx,e,prevMouseX,prevMouseY,String(hexValue),size);
-                    
-                    //fountainPen(ctx, e, snapshot);
-                    //caligraphyPen(ctx,e,prevMouseX,prevMouseY,size);
-                    //fun(ctx,e,String(hexValue));
+                case "fountainPen":
+                    fountainPen(ctx, e, snapshot);
+                    break;
+                case "smudge":
+                    shadowbrush(ctx,e,prevMouseX,prevMouseY,String(hexValue),size)
+                    break;
+                case "caligraphy":
+                    caligraphyPen(ctx,e,prevMouseX,prevMouseY,size);
+                    break;
+                case "funPen":
+                    fun(ctx,e,String(hexValue));
+                    break;
+                case "Airbrush":
                     airBrush(ctx,e,size);
-               break;
+                break;
 
             }
         }
@@ -232,6 +231,7 @@ function updateCustomColor() {
     const colorPicker = document.getElementById("custom");
     const colorDisplay = document.getElementById("colorDisplay");
     x = colorPicker.value;
+    hexValue = colorDisplay.value;
 }
 
 function strokeSize() {

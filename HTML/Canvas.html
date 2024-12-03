@@ -4,8 +4,8 @@
 
     <title>Squidink</title>
     <link rel="stylesheet" href="../CSS/Canvas.css">
-    <script src="../JavaScript/BrushesJS.js"></script>
-    <script src="../JavaScript/CanvasJS.js"></script>
+    <script src="../JavaScript/BrushesJS.js" defer></script>
+    <script src="../JavaScript/CanvasJS.js" defer></script>
 
 </head>
 
@@ -30,7 +30,7 @@
                 </div>
                 <div id="ColorSelect">
                     <div class="label">Tool Color</div>
-                    <div id="colorDisplay" onclick="color(this)"></div>
+                    <div id="colorDisplay" ></div>
                 </div>
 
                 <div id="BrushScale">
@@ -42,7 +42,12 @@
                 <div id="Tools">
                     <div class="label">Tools</div>
                     <div id="eraser" onclick="SetTool(this)"></div>
-
+                    <div id="pen" onclick="SetTool(this)"></div>
+                    <dif id="fountainPen"  onclick="SetTool(this)"></dif>
+                    <dif id="smudge"  onclick="SetTool(this)"></dif>
+                    <dif id="caligrafy"  onclick="SetTool(this)"></dif>
+                    <dif id="funPen"  onclick="SetTool(this)"></dif>
+                    <dif id="airbrush"  onclick="SetTool(this)"></dif>
                 </div>
                 <div id="CanvasMods">
                     <div class="label">Canvas Mods</div>
