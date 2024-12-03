@@ -33,8 +33,8 @@ var x = "black",
 
 function init() {
     canvas = document.getElementById('BackgroundCanvas');
-    canvas.width = 505;
-    canvas.height = 505;
+    canvas.width = 1000;
+    canvas.height = 700;
     HotKeys();
     layers.push(canvas);
     currentStroke = 0;
@@ -69,7 +69,8 @@ function addLayer() {
     layers.push(newCanvas);
     document.getElementById("layersDisplay").innerHTML = layers.length;
     document.getElementById("canvases").append(layers[layers.length-1]);
- 
+    currentCanvas = layers.length-1
+    changeCurrentCanvasContext()
 }
 function changeCurrentLayer(direction) {
     if (direction == 'up' && (currentCanvas + 1) < layers.length) {
@@ -114,7 +115,7 @@ function color()
 }
 
 function SetTool(obj) {
-    tool = obj.id
+    tool = obj.id;
 }
 
 

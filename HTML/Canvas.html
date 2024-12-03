@@ -40,21 +40,37 @@
 
                 <div id="Tools">
                     <div class="label">Tools</div>
-                    <!--Not currently working-->
-                    <div  id="eraser" onclick="SetTool(this)"></div>
+                 
+                    <button  id="eraser" onclick="SetTool(this)">Earser</button>
+                    <button id ="pen" onclick="SetTool(this)">Pen</button>
 
                 </div>
-                <div id="CanvasMods">
-                    <div class="label">Canvas Mods</div>
-                    <input type="button" value="Save" id="SaveButton" size="30" onclick="save()">
-                    <input type="button" value="Clear" id="Clear" size="23" onclick="erase()">
-                    <input type="button" value="Add layer" id="AddLayer" onclick="addLayer()">
-                    <!-- Set to layer selection instead of up or down a layer -->
-                    <input type="button" value="Up layer" id="UpLayer" onclick="changeCurrentLayer('up')">
-                    <input type="button" value="Down layer" id="DownLayer" onclick="changeCurrentLayer('down')">
+                <div id="Layering">
+                    
+                    <div class="label">Layers</div>
+                    <div>
+                        <button id="AddLayer" onclick="addLayer()">Add Layer</button>
+                        <button id="RemoveLayer"> Remove Layer</button>
+
+                    </div>
 
                     <h4><span id="currentLayerDisplay"></span></h4>
                     <h4><span id="layersDisplay"></span></h4>
+                    <!-- Set to layer selection instead of up or down a layer -->
+                    <button id="UpLayer" onclick="changeCurrentLayer('up')">Up Layer</button>
+                    <button id="DownLayer" onclick="changeCurrentLayer('down')">Down Layer</button>
+                    <div>
+                        <button id="ShiftLayerUp">Move Up</button>
+                        <button id="ShiftLayerDown">Move Down</button>
+                    </div>
+                </div>
+
+                <div id="CanvasMods">
+                    <div class="label">Canvas Mods</div>
+                    <button id="Save" onclick="save()">Save</button>
+                    <button id="Clear" onclick="erase()">Clear</button>
+                    <input type="file" name="Add Image" id="Addimg" onclick="ImportImage()">
+                   
                 </div>
 
             </div>

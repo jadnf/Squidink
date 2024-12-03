@@ -18,7 +18,7 @@ body{
    
     grid-column: 1/13;
     grid-row:1/11;
-    overflow: scroll;
+
     
 }
 
@@ -48,11 +48,9 @@ body{
 
 .Canvas{
    
- position:absolute;
-    top:20px;
-    bottom: 50px;
-    right: 50px;
-    left: 35px;
+    position:absolute;
+   top: 10%;
+   left: 10%;
     
 }
 
@@ -120,7 +118,8 @@ body{
     margin-bottom: 8px;
   }
   #eraser{
-    width:15px;height:15px;
-    background:white;
-    border:2px solid;
+    
+   
+   
+   
   }
