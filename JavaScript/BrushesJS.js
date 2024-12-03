@@ -140,9 +140,6 @@ function fun(ctx, e, hex)
     
 }
 
-
-
-
 function airBrush(ctx, e,size)
 {
     ctx.globalCompositeOperation="source-over"; 
@@ -155,12 +152,6 @@ function airBrush(ctx, e,size)
         ctx.fillRect(e.offsetX + offsetX, e.offsetY + offsetY, 1, 1);
     }
 }
-
-
-
-
-
-
 
 function convertToRGBA(hex, value) {
   

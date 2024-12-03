@@ -39,8 +39,8 @@ strokeSize();
 function init() {
     strokeSize();
     canvas = document.getElementById('BackgroundCanvas');
-    canvas.width = 1400;
-    canvas.height = 1400;
+    canvas.width = 1000;
+    canvas.height = 700;
     HotKeys();
 
     
@@ -85,6 +85,8 @@ function addLayer() {
     document.getElementById("layersDisplay").innerHTML = layers.length;
     document.getElementById("canvases").append(layers[layers.length-1]);
   //  console.log(newCanvas.style.zIndex);
+    currentCanvas = layers.length - 1;
+    changeCurrentCanvasContext();
 }
 
 function changeCurrentLayer(direction) {
@@ -151,7 +153,7 @@ function findxy(res, e) {
             ctx.fillStyle = x;
             ctx.moveTo(e.offsetX, e.offsetY);
 
-            actionHistroy = layers;
+            //actionHistroy = layers;
     snapshot = ctx.getImageData(0, 0, layers[currentCanvas].width, layers[currentCanvas].height);
         }
     }
@@ -181,10 +183,9 @@ function findxy(res, e) {
                 case "funPen":
                     fun(ctx,e,String(hexValue));
                     break;
-                case "Airbrush":
+               case "airbrush":
                     airBrush(ctx,e,size);
-                break;
-
+                    break;
             }
         }
         prevMouseX = e.offsetX;
@@ -300,5 +301,13 @@ function HotKeys() {
         event.preventDefault();
         tool = "pen";
        } 
+    });
+
+    document.addEventListener('keydown', function (event) {
+        if (event.key == 'b') {
+
+            event.preventDefault();
+            tool = "airbrush";
+        }
     });
 }
