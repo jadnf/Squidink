@@ -137,10 +137,11 @@ function save() {
 
 
 function erase() {
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    document.getElementById("canvasimg").style.display = "none";
-
+    if (!isDrawing)
+    {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        document.getElementById("canvasimg").style.display = "none";
+    }
 }
 
 function findxy(res, e) {

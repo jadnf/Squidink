@@ -38,6 +38,7 @@ function eraser(ctx, e, snapshot)
 
 function shadowbrush(ctx,e,prevX, prevY, hex,size)
 {
+    ctx.globalCompositeOperation="source-over"; 
     var lastPoint = {x: prevX, y: prevY}
     var currentPoint = { x: e.offsetX, y: e.offsetY};
     var dist = distanceBetween(lastPoint, currentPoint);
@@ -58,6 +59,8 @@ function shadowbrush(ctx,e,prevX, prevY, hex,size)
         ctx.fillRect(x-size * 2, y- size * 2, size * 4, size * 4);
         
     }
+
+    ctx.stroke();
     
 }
 
