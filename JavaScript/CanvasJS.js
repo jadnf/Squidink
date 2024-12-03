@@ -22,9 +22,14 @@ const imageInput = document.getElementById('image');
 var shadowAmount;
 
 var colorValue,tool="pen";
+// let hexValue = inputcolor.value;
+// x = inputcolor.value;
+
+var paintStrokes = [];
+var layers = [];
+var size = 2;
 let actionHistroy = [];
 let redoHistory = [];
-var layers = [];
 
 var x = "black",
     y = 2;
@@ -38,6 +43,7 @@ function init() {
     
     // document.getElementById("canvases").width = canvas.width;
     //document.getElementById("canvases").height = canvas.height;
+   
 
     layers.push(canvas);
     
@@ -114,7 +120,10 @@ function changeCurrentCanvasContext() {
 
 function color()
 {
-    x = colorValue;
+    colorValue.addEventListener("input", function () {
+        hexValue = colorValue.value
+        x = colorValue.value;
+    });
 }
 
 function SetTool(obj) {
@@ -123,10 +132,12 @@ function SetTool(obj) {
 
 
 function save() {
-    document.getElementById("canvasimg").style.border = "2px solid";
-    var dataURL = canvas.toDataURL();
-    document.getElementById("canvasimg").src = dataURL;
-    document.getElementById("canvasimg").style.display = "inline";
+    const link = document.createElement("a"); // creating <a> elemen
+    link.download = `${Date.now()}.jpg`; // passing current date as link download value
+    for(var i = 0; i < layers.length; i++) {
+    link.href = layers[i].toDataURL(); // passing canvasData as link href value
+    }
+    link.click();
 }
 
 
@@ -156,6 +167,7 @@ function findxy(res, e) {
     }
     if (res == 'move') {
         if (isDrawing) {
+            
             switch(tool)
             {
                 case "pen":
@@ -163,12 +175,22 @@ function findxy(res, e) {
                     break;
                 case "eraser":
                     eraser(ctx, e, snapshot);
+                    y = 10;
                     break;
                 case "bucket":
                     bucket(canvas.width, canvas.height, inputcolor, inputcolor);
             //    case "airbrush":
             //         shadowbrush(ctx,e,snapshot,y,x);
             //    break;
+               case "airbrush":
+                    //shadowbrush(ctx,e,prevMouseX,prevMouseY,String(hexValue),size);
+                    
+                    //fountainPen(ctx, e, snapshot);
+                    //caligraphyPen(ctx,e,prevMouseX,prevMouseY,size);
+                    //fun(ctx,e,String(hexValue));
+                    airBrush(ctx,e,size);
+               break;
+
             }
         }
         prevMouseX = e.offsetX;
@@ -179,7 +201,7 @@ function findxy(res, e) {
 function ImportImage()
 {
     addLayer();
-    ctx = layers[currentCanvas - 1].getContext("2d");
+    ctx = layers[currentCanvas].getContext("2d");
     imageInput.addEventListener("change", (event) => {
         // Get the selected file
         const file = event.target.files[0];
@@ -220,6 +242,7 @@ function updateCustomColor() {
 function strokeSize() {
     const slider = document.getElementById("slider");
     y = slider.value;
+    size = slider.value;
 }
 
 function shadowAmount() 
@@ -233,7 +256,7 @@ function HotKeys() {
     document.addEventListener('keydown', function (event) {
         if (event.ctrlKey && event.key === 'z') {
 
-            // Prevent the default browser save action
+            // Prevent the default browser save action\
 
             event.preventDefault();
 
