@@ -18,20 +18,22 @@ const imageInput = document.getElementById('image');
 var shadowAmount;
 
 var colorValue,tool="pen";
+// let hexValue = inputcolor.value;
+// x = inputcolor.value;
 
 var paintStrokes = [];
 var layers = [];
-
-
-
+var size = 2;
 let actionHistroy = [];
 let redoHistory = [];
-var layers = [];
 
 var x = "black",
-    y = 2;
+    y, hexValue;
+
+strokeSize();
 
 function init() {
+    strokeSize();
     canvas = document.getElementById('BackgroundCanvas');
    // canvas.width = 1000;
    // canvas.height = 700;
@@ -60,6 +62,7 @@ function init() {
         findxy('out', e)
     }, false);
 }
+
 function addLayer() {
     var newCanvas = document.createElement('canvas');
     newCanvas.width = canvas.width;
@@ -72,6 +75,7 @@ function addLayer() {
     currentCanvas = layers.length-1
     changeCurrentCanvasContext()
 }
+
 function changeCurrentLayer(direction) {
     if (direction == 'up' && (currentCanvas + 1) < layers.length) {
         currentCanvas += 1;
@@ -81,9 +85,7 @@ function changeCurrentLayer(direction) {
         
     }
     changeCurrentCanvasContext();
-    
 }
-
 
 function changeCurrentCanvasContext() {
     ctx = layers[currentCanvas].getContext('2d');
@@ -106,24 +108,18 @@ function changeCurrentCanvasContext() {
 }
 
 
-
-
-
-function color()
-{
-    x = colorValue;
-}
-
 function SetTool(obj) {
     tool = obj.id;
 }
 
 
 function save() {
-    document.getElementById("canvasimg").style.border = "2px solid";
-    var dataURL = canvas.toDataURL();
-    document.getElementById("canvasimg").src = dataURL;
-    document.getElementById("canvasimg").style.display = "inline";
+    const link = document.createElement("a"); // creating <a> elemen
+    link.download = `${Date.now()}.jpg`; // passing current date as link download value
+    for(var i = 0; i < layers.length; i++) {
+    link.href = layers[i].toDataURL(); // passing canvasData as link href value
+    }
+    link.click();
 }
 
 
@@ -144,6 +140,7 @@ function findxy(res, e) {
             ctx.fillStyle = x;
             ctx.moveTo(e.offsetX, e.offsetY);
 
+            //actionHistroy = layers;
     snapshot = ctx.getImageData(0, 0, layers[currentCanvas].width, layers[currentCanvas].height);
         }
     }
@@ -152,6 +149,7 @@ function findxy(res, e) {
     }
     if (res == 'move') {
         if (isDrawing) {
+            
             switch(tool)
             {
                 case "pen":
@@ -160,10 +158,21 @@ function findxy(res, e) {
                 case "eraser":
                     eraser(ctx, e, snapshot);
                     break;
-            //    case "airbrush":
-            //         shadowbrush(ctx,e,snapshot,y,x);
-            //    break;
-
+                case "fountainPen":
+                    fountainPen(ctx, e, snapshot);
+                    break;
+                case "smudge":
+                    shadowbrush(ctx,e,prevMouseX,prevMouseY,String(hexValue),size)
+                    break;
+                case "caligraphy":
+                    caligraphyPen(ctx,e,prevMouseX,prevMouseY,size);
+                    break;
+                case "funPen":
+                    fun(ctx,e,String(hexValue));
+                    break;
+               case "airbrush":
+                    airBrush(ctx,e,size);
+                    break;
             }
         }
         prevMouseX = e.offsetX;
@@ -174,7 +183,7 @@ function findxy(res, e) {
 function ImportImage()
 {
     addLayer();
-    ctx = layers[currentCanvas - 1].getContext("2d");
+    ctx = layers[currentCanvas].getContext("2d");
     imageInput.addEventListener("change", (event) => {
         // Get the selected file
         const file = event.target.files[0];
@@ -210,11 +219,13 @@ function updateCustomColor() {
     const colorPicker = document.getElementById("custom");
     const colorDisplay = document.getElementById("colorDisplay");
     x = colorPicker.value;
+    hexValue = colorDisplay.value;
 }
 
 function strokeSize() {
     const slider = document.getElementById("slider");
     y = slider.value;
+    size = slider.value;
 }
 
 function shadowAmount() 
@@ -228,11 +239,14 @@ function HotKeys() {
     document.addEventListener('keydown', function (event) {
         if (event.ctrlKey && event.key === 'z') {
 
-            // Prevent the default browser save action
+            // Prevent the default browser save action\
 
             event.preventDefault();
 
-            paintStrokes[currentStroke - 1];
+            // if (actionHistroy.length > 0)
+            // {
+            //     actionHistroy = 
+            // }
 
             console.log('Ctrl+Z pressed!');
         }
@@ -245,7 +259,7 @@ function HotKeys() {
 
             event.preventDefault();
 
-            // Do something when Ctrl+S is pressed
+            // Do something when Ctrl+Yis pressed
 
 
 
@@ -257,6 +271,30 @@ function HotKeys() {
         if (event.key == 'r') {
             event.preventDefault();
             erase();
+        }
+    });
+
+    document.addEventListener('keydown', function (event) {
+        if (event.key == 'e') {
+
+            event.preventDefault();
+            tool = "eraser";
+        } 
+    });
+
+    document.addEventListener('keydown', function (event) {
+       if (event.key == 'p') {
+
+        event.preventDefault();
+        tool = "pen";
+       } 
+    });
+
+    document.addEventListener('keydown', function (event) {
+        if (event.key == 'b') {
+
+            event.preventDefault();
+            tool = "airbrush";
         }
     });
 }
