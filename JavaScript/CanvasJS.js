@@ -32,9 +32,12 @@ let actionHistroy = [];
 let redoHistory = [];
 
 var x = "black",
-    y = 2;
+    y;
+
+strokeSize();
 
 function init() {
+    strokeSize();
     canvas = document.getElementById('BackgroundCanvas');
     canvas.width = 1400;
     canvas.height = 1400;
@@ -116,7 +119,7 @@ function changeCurrentCanvasContext() {
     console.log("changed canvas context");
 }
 
-function color()
+function cozlor()
 {
     colorValue.addEventListener("input", function () {
         hexValue = colorValue.value
@@ -173,7 +176,6 @@ function findxy(res, e) {
                     break;
                 case "eraser":
                     eraser(ctx, e, snapshot);
-                    y = 10;
                     break;
                case "airbrush":
                     //shadowbrush(ctx,e,prevMouseX,prevMouseY,String(hexValue),size);

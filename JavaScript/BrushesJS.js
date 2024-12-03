@@ -116,6 +116,7 @@ function caligraphyPen(ctx,e,prevX,prevY, size)
 
 function fun(ctx, e, hex)
 {
+  ctx.globalCompositeOperation="source-over"; 
   ctx.lineWidth = 1;
   points.push({ x: e.offsetX, y: e.offsetY });
   ctx.beginPath();
@@ -144,6 +145,7 @@ function fun(ctx, e, hex)
 
 function airBrush(ctx, e,size)
 {
+    ctx.globalCompositeOperation="source-over"; 
     var density = size * 2;
     ctx.moveTo(e.offsetX, e.offsetY);
     for (var i = density; i--; ) {
