@@ -33,8 +33,8 @@ var x = "black",
 
 function init() {
     canvas = document.getElementById('BackgroundCanvas');
-    canvas.width = 1000;
-    canvas.height = 700;
+   // canvas.width = 1000;
+   // canvas.height = 700;
     HotKeys();
     layers.push(canvas);
     currentStroke = 0;
