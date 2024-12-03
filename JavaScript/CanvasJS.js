@@ -160,15 +160,21 @@ function findxy(res, e) {
                 case "eraser":
                     eraser(ctx, e, snapshot);
                     break;
+                case "fountainPen":
+                    fountainPen(ctx, e, snapshot);
+                    break;
+                case "smudge":
+                    shadowbrush(ctx,e,prevMouseX,prevMouseY,String(hexValue),size)
+                    break;
+                case "caligraphy":
+                    caligraphyPen(ctx,e,prevMouseX,prevMouseY,size);
+                    break;
+                case "funPen":
+                    fun(ctx,e,String(hexValue));
+                    break;
                case "airbrush":
-                    //shadowbrush(ctx,e,prevMouseX,prevMouseY,String(hexValue),size);
-                    
-                    //fountainPen(ctx, e, snapshot);
-                    //caligraphyPen(ctx,e,prevMouseX,prevMouseY,size);
-                    //fun(ctx,e,String(hexValue));
                     airBrush(ctx,e,size);
-               break;
-
+                    break;
             }
         }
         prevMouseX = e.offsetX;
