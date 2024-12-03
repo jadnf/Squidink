@@ -24,9 +24,12 @@ var layers = [];
 var size = 2;
 
 var x = "black",
-    y = 2;
+    y;
+
+strokeSize();
 
 function init() {
+    strokeSize();
     canvas = document.getElementById('can1');
     
     canvasStyle = document.getElementById('can1');
@@ -102,7 +105,7 @@ function changeCurrentCanvasContext() {
 }
 
 
-function color()
+function cozlor()
 {
     colorValue.addEventListener("input", function () {
         hexValue = colorValue.value
@@ -156,7 +159,6 @@ function findxy(res, e) {
                     break;
                 case "eraser":
                     eraser(ctx, e, snapshot);
-                    y = 10;
                     break;
                case "airbrush":
                     //shadowbrush(ctx,e,prevMouseX,prevMouseY,String(hexValue),size);
