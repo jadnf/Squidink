@@ -177,20 +177,9 @@ function findxy(res, e) {
                     eraser(ctx, e, snapshot);
                     y = 10;
                     break;
-                case "bucket":
-                    bucket(canvas.width, canvas.height, inputcolor, inputcolor);
-            //    case "airbrush":
-            //         shadowbrush(ctx,e,snapshot,y,x);
-            //    break;
                case "airbrush":
-                    //shadowbrush(ctx,e,prevMouseX,prevMouseY,String(hexValue),size);
-                    
-                    //fountainPen(ctx, e, snapshot);
-                    //caligraphyPen(ctx,e,prevMouseX,prevMouseY,size);
-                    //fun(ctx,e,String(hexValue));
                     airBrush(ctx,e,size);
-               break;
-
+                    break;
             }
         }
         prevMouseX = e.offsetX;
@@ -311,7 +300,7 @@ function HotKeys() {
         if (event.key == 'b') {
 
             event.preventDefault();
-            tool = "bucket";
+            tool = "airbrush";
         }
     });
 }
