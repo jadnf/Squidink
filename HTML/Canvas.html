@@ -12,9 +12,9 @@
 <body onload="init()">
 
     <div id="gridContaner">
-        <div id="canvases" class="Grid_item">
+            <div id="canvases" class="Grid_item">
             
-                <canvas id="BackgroundCanvas" id="can1" class="Canvas"></canvas>
+                <canvas id="BackgroundCanvas"class="Canvas" style="position:absolute;z-index: 0;"></canvas>
 
             </div>
           <img id="canvasimg" style="position:absolute;top:10%;left:52%;" style="display:none;">
@@ -41,7 +41,7 @@
 
                 <div id="Tools">
                     <div class="label">Tools</div>
-                    <div id="Eraser" onclick="color(this)"></div>
+                    <div id="Eraser" onclick="SetTool(this)"></div>
 
                 </div>
                 <div id="CanvasMods">
@@ -52,6 +52,9 @@
                     <!-- Set to layer selection instead of up or down a layer -->
                     <input type="button" value="Up layer" id="UpLayer" onclick="changeCurrentLayer('up')">
                     <input type="button" value="Down layer" id="DownLayer" onclick="changeCurrentLayer('down')">
+                    <input type="button" value="Shift layer up" id="ShiftUp" onclick="shiftLayer('up')">
+                    <input type="button" value="Shift layer down" id="ShiftDown" onclick="shiftLayer('down')">
+                    <input type="button" value="Remove layer" id="RemoveLayer" onclick="removeLayer()">
 
                     <h4><span id="currentLayerDisplay"></span></h4>
                     <h4><span id="layersDisplay"></span></h4>

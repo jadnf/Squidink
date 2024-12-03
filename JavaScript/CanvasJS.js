@@ -10,7 +10,7 @@ var canvas, ctx, flag = false,
     dot_flag = false,
    // canvasWidth = 400,
    // canvasHeight = 400,
-    currentCanvas = 1,
+    currentCanvas = 0,
     canvasStyle,
     dot_flag = false,
     isDrawing = false,
@@ -32,8 +32,8 @@ var x = "black",
 
 function init() {
     canvas = document.getElementById('BackgroundCanvas');
-    canvas.width = 1400;
-    canvas.height = 1400;
+    canvas.width = 800;
+    canvas.height = 800;
     HotKeys();
 
     
@@ -67,20 +67,66 @@ function init() {
         findxy('out', e)
     }, false);
 }
+function removeLayer(){
+    layers.splice(currentCanvas, 1);
+    currentCanvas -= 1;
+    changeCurrentCanvasContext();
+}
+
 function addLayer() {
     var newCanvas = document.createElement('canvas');
+    newCanvas.style = canvas.style;
     newCanvas.width = canvas.width;
     newCanvas.height = canvas.height;
-    newCanvas.className = "Canvas"
+    newCanvas.className = "Canvas";
+    newCanvas.style.position = 'absolute';
     newCanvas.id = 'can' + (layers.length + 1);
+    newCanvas.zIndex = (layers.length - 1) + '';
     layers.push(newCanvas);
     document.getElementById("layersDisplay").innerHTML = layers.length;
-    document.getElementById("canvases").append(layers[layers.length-1]);
+    currentCanvas = layers.length - 1;
+    document.getElementById('canvases').append(newCanvas);
+    changeCurrentCanvasContext();
   //  console.log(newCanvas.style.zIndex);
 }
+function updateLayerDisplay(){
+    var updatedCanvases = document.createElement('div');
+    updatedCanvases.style = document.getElementById('canvases');
+
+    for(var i = 0; i < layers.length - 1; i++){
+        
+    }
+    document.getElementById('canvases') = updatedCanvases;
+}
+
+function shiftLayer(shift){
+    if(shift == 'up'){
+        var curLayer = layers[currentCanvas];
+        
+        var targetLayer = layers[currentCanvas + 1];
+
+        
+        layers[currentCanvas] = targetLayer;
+        layers[currentCanvas].style.zIndex = curLayer.style.zIndex + "";
+        layers[currentCanvas + 1] = curLayer;
+        layers[currentCanvas + 1].style.zIndex = targetLayer.style.zIndex + "";
+        
+        
+        console.log("shifted up")
+    }
+    else if(shift == 'down'){
+        var inter1 = layers[currentCanvas - 1];
+        layers[currentCanvas - 1 ] = layers[currentCanvas];
+        layers[currentCanvas] = inter1;
+        console.log("shifted down")
+    }
+    changeCurrentCanvasContext();
+}
+
 function changeCurrentLayer(direction) {
     if (direction == 'up' && (currentCanvas + 1) < layers.length) {
         currentCanvas += 1;
+        
         
     } else if (direction == 'down' && (currentCanvas + 1) > 1){
         currentCanvas -= 1;
@@ -95,6 +141,7 @@ function changeCurrentCanvasContext() {
     ctx = layers[currentCanvas].getContext('2d');
     document.getElementById("currentLayerDisplay").innerHTML = currentCanvas+1;
     document.getElementById("layersDisplay").innerHTML = layers.length;
+    //updateLayerDisplay();
     
     layers[currentCanvas].addEventListener("mousemove", function (e) {
         findxy('move', e)
@@ -133,19 +180,10 @@ function save() {
 }
 function erase() {
 
-    ctx.clearRect(0, 0, w, h);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     document.getElementById("canvasimg").style.display = "none";
 
 }
-
-
-function erase() {
-
-    ctx.clearRect(0, 0, w, h);
-    document.getElementById("canvasimg").style.display = "none";
-
-}
-
 function findxy(res, e) {
     if (res == 'down') {
         isDrawing = true;

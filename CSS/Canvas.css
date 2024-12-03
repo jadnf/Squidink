@@ -33,6 +33,7 @@ body{
     border-bottom-left-radius: 1%;
     grid-column: 13/16;
     grid-row: 1/11;
+    z-index: 50;
    
 }
 
@@ -51,13 +52,16 @@ body{
 
 .Canvas{
    
-    position:relative;
+    position:absolute;
     top:10%;
     bottom: 10%;
     right: 10%;
     left: 10%;
     
 }
+/* #can2{
+    background-color: #000;
+} */
 #BackgroundCanvas{
     
     background-color: white;
