@@ -71,13 +71,15 @@ function init() {
     }, false);
 }
 function removeLayer(){
-    layers[currentCanvas].remove();
+    if(currentCanvas != 0)
+    {
+        layers[currentCanvas].remove();
     layers.splice(currentCanvas, 1);
     currentCanvas -= 1;
 
-    
-    //canvasElement.remove();
     changeCurrentCanvasContext();
+    }
+    
 }
 
 function addLayer() {
