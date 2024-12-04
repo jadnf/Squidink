@@ -18,7 +18,8 @@ const imageInput = document.getElementById('image');
 var shadowAmount;
 
 var colorValue,tool="pen";
-// let hexValue = inputcolor.value;
+ let hexValue = inputcolor.value;
+ //x = hexValue;
 // x = inputcolor.value;
 
 var paintStrokes = [];
@@ -26,17 +27,25 @@ var layers = [];
 var size = 2;
 
 
-var x = "black",
-    y, hexValue;
+var x = "black",y;
 
 strokeSize();
 
 function init() {
     strokeSize();
     canvas = document.getElementById('BackgroundCanvas');
-   // canvas.width = 1000;
-   // canvas.height = 700;
+  
     HotKeys();
+
+    inputcolor.addEventListener('input', (event) => {
+
+        colorValue = event.target.value;
+        x = colorValue;
+        hexValue = inputcolor.value;
+        strokeSize();
+    }), false;
+
+
     layers.push(canvas);
     currentStroke = 0;
     currentCanvas = 0;
@@ -223,9 +232,9 @@ function ImportImage()
 
 function updateCustomColor() {
     const colorPicker = document.getElementById("custom");
-    const colorDisplay = document.getElementById("colorDisplay");
+   
     x = colorPicker.value;
-    hexValue = colorDisplay.value;
+  
 }
 
 function strokeSize() {
