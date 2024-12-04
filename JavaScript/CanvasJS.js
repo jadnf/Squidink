@@ -71,18 +71,22 @@ function init() {
     }, false);
 }
 function removeLayer(){
+    layers[currentCanvas].remove();
     layers.splice(currentCanvas, 1);
     currentCanvas -= 1;
+
+    
+    //canvasElement.remove();
     changeCurrentCanvasContext();
 }
 
 function addLayer() {
     var newCanvas = document.createElement('canvas');
-    newCanvas.style = canvas.style;
+   // newCanvas.style = canvas.style;
     newCanvas.width = canvas.width;
     newCanvas.height = canvas.height;
     newCanvas.className = "Canvas";
-    newCanvas.style.position = 'absolute';
+   // newCanvas.style.position = 'absolute';
     newCanvas.id = 'can' + (layers.length + 1);
     newCanvas.zIndex = (layers.length - 1) + '';
     layers.push(newCanvas);
