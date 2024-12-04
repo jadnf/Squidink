@@ -24,8 +24,7 @@ var colorValue,tool="pen";
 var paintStrokes = [];
 var layers = [];
 var size = 2;
-let actionHistroy = [];
-let redoHistory = [];
+
 
 var x = "black",
     y, hexValue;
@@ -62,13 +61,21 @@ function init() {
         findxy('out', e)
     }, false);
 }
+function removeLayer(){
+    layers.splice(currentCanvas, 1);
+    currentCanvas -= 1;
+    changeCurrentCanvasContext();
+}
 
 function addLayer() {
     var newCanvas = document.createElement('canvas');
+    newCanvas.style = canvas.style;
     newCanvas.width = canvas.width;
     newCanvas.height = canvas.height;
-    newCanvas.className = "Canvas"
+    newCanvas.className = "Canvas";
+    newCanvas.style.position = 'absolute';
     newCanvas.id = 'can' + (layers.length + 1);
+    newCanvas.zIndex = (layers.length - 1) + '';
     layers.push(newCanvas);
     document.getElementById("layersDisplay").innerHTML = layers.length;
     document.getElementById("canvases").append(layers[layers.length-1]);
@@ -79,6 +86,7 @@ function addLayer() {
 function changeCurrentLayer(direction) {
     if (direction == 'up' && (currentCanvas + 1) < layers.length) {
         currentCanvas += 1;
+        
         
     } else if (direction == 'down' && (currentCanvas + 1) > 1){
         currentCanvas -= 1;
@@ -91,6 +99,7 @@ function changeCurrentCanvasContext() {
     ctx = layers[currentCanvas].getContext('2d');
     document.getElementById("currentLayerDisplay").innerHTML = currentCanvas+1;
     document.getElementById("layersDisplay").innerHTML = layers.length;
+    //updateLayerDisplay();
     
     layers[currentCanvas].addEventListener("mousemove", function (e) {
         findxy('move', e)
@@ -121,15 +130,12 @@ function save() {
     }
     link.click();
 }
-
-
 function erase() {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     document.getElementById("canvasimg").style.display = "none";
 
 }
-
 function findxy(res, e) {
     if (res == 'down') {
         isDrawing = true;
