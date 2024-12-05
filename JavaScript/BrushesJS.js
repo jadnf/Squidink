@@ -1,6 +1,8 @@
 
 var rgbaColor, lastPoint;
-var points = [];
+var points= [];
+var pointsTwo = [];
+
 var clientX, clientY, timeout;
 
 
@@ -116,22 +118,22 @@ function fun(ctx, e, hex)
 {
   ctx.globalCompositeOperation="source-over"; 
   ctx.lineWidth = 1;
-  points.push({ x: e.offsetX, y: e.offsetY });
+  pointsTwo.push({ x: e.offsetX, y: e.offsetY });
   ctx.beginPath();
-  ctx.moveTo(points[points.length - 2].x, points[points.length - 2].y);
-  ctx.lineTo(points[points.length - 1].x, points[points.length - 1].y);
+  ctx.moveTo(pointsTwo[pointsTwo.length - 2].x, pointsTwo[pointsTwo.length - 2].y);
+  ctx.lineTo(pointsTwo[pointsTwo.length - 1].x, pointsTwo[pointsTwo.length - 1].y);
   ctx.stroke();
   
-  for (var i = 0, len = points.length; i < len; i++) {
-    dx = points[i].x - points[points.length-1].x;
-    dy = points[i].y - points[points.length-1].y;
+  for (var i = 0, len = pointsTwo.length; i < len; i++) {
+    dx = pointsTwo[i].x - pointsTwo[pointsTwo.length-1].x;
+    dy = pointsTwo[i].y - pointsTwo[pointsTwo.length-1].y;
     d = dx * dx + dy * dy;
 
     if (d < 1000) {
       ctx.beginPath();
       ctx.strokeStyle = convertToRGBA(hex, 0.3);
-      ctx.moveTo( points[points.length-1].x + (dx * 0.2), points[points.length-1].y + (dy * 0.2));
-      ctx.lineTo( points[i].x - (dx * 0.2), points[i].y - (dy * 0.2));
+      ctx.moveTo( pointsTwo[pointsTwo.length-1].x + (dx * 0.2), pointsTwo[pointsTwo.length-1].y + (dy * 0.2));
+      ctx.lineTo( pointsTwo[i].x - (dx * 0.2), pointsTwo[i].y - (dy * 0.2));
       ctx.stroke();
     }
   }
