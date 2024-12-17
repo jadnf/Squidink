@@ -18,8 +18,6 @@ const imageInput = document.getElementById('image');
 var shadowAmount;
 
 var colorValue,tool="pen";
-// let hexValue = inputcolor.value;
-// x = inputcolor.value;
 
 var paintStrokes = [];
 var layers = [];
@@ -34,9 +32,7 @@ strokeSize();
 function init() {
     strokeSize();
     canvas = document.getElementById('BackgroundCanvas');
-   // canvas.width = 1000;
-   // canvas.height = 700;
-    HotKeys();
+    
     layers.push(canvas);
     currentStroke = 0;
     currentCanvas = 0;
@@ -130,7 +126,7 @@ function save() {
     }
     link.click();
 }
-function erase() {
+function clear() {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     document.getElementById("canvasimg").style.display = "none";
@@ -146,7 +142,7 @@ function findxy(res, e) {
             ctx.fillStyle = x;
             ctx.moveTo(e.offsetX, e.offsetY);
 
-            //actionHistroy = layers;
+         
     snapshot = ctx.getImageData(0, 0, layers[currentCanvas].width, layers[currentCanvas].height);
         }
     }
@@ -209,14 +205,12 @@ function ImportImage()
                 };
             };
 
-           // ctx.putImageData(snapshot, 0, 0);
+  
             reader.readAsDataURL(file);
         }
     });
 
-    // layers[currentCanvas - 1].addEventListener("mousedown", function (e) {
-    //     ctx.drawImage(img.value,e.offsetX,e.offsetY);
-    // }, false);
+    
 }
 
 
@@ -241,66 +235,4 @@ function shadowAmount()
 }
 
 
-function HotKeys() {
-    document.addEventListener('keydown', function (event) {
-        if (event.ctrlKey && event.key === 'z') {
 
-            // Prevent the default browser save action\
-
-            event.preventDefault();
-
-            // if (actionHistroy.length > 0)
-            // {
-            //     actionHistroy = 
-            // }
-
-            console.log('Ctrl+Z pressed!');
-        }
-    });
-
-    document.addEventListener('keydown', function (event) {
-        if (event.ctrlKey && event.key === 'y') {
-
-            // Prevent the default browser save action
-
-            event.preventDefault();
-
-            // Do something when Ctrl+Yis pressed
-
-
-
-            console.log('Ctrl+Y pressed!');
-        }
-    });
-
-    document.addEventListener('keydown', function (event) {
-        if (event.key == 'r') {
-            event.preventDefault();
-            erase();
-        }
-    });
-
-    document.addEventListener('keydown', function (event) {
-        if (event.key == 'e') {
-
-            event.preventDefault();
-            tool = "eraser";
-        } 
-    });
-
-    document.addEventListener('keydown', function (event) {
-       if (event.key == 'p') {
-
-        event.preventDefault();
-        tool = "pen";
-       } 
-    });
-
-    document.addEventListener('keydown', function (event) {
-        if (event.key == 'b') {
-
-            event.preventDefault();
-            tool = "airbrush";
-        }
-    });
-}

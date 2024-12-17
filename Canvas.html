@@ -3,10 +3,10 @@
 <head>
 
     <title>Squidink</title>
-    <link rel="stylesheet" href="../CSS/Canvas.css">
-    <script src="../JavaScript/BrushesJS.js"defer></script>
-    <script src="../JavaScript/CanvasJS.js" defer></script>
-
+    <link rel="stylesheet" href="CSS/Canvas.css">
+    <script src="JavaScript/BrushesJS.js"defer></script>
+    <script src="JavaScript/main.js" defer></script>
+    <script src="JavaScript/CanvasLayout.js" defer></script>
 </head>
 
 <body onload="init()">
@@ -14,7 +14,7 @@
     <div id="gridContaner">
         <div id="canvases" class="Grid_item">
            
-                <canvas id="BackgroundCanvas" id="can1" class="Canvas" width="1000" height="700"></canvas>
+                <canvas id="BackgroundCanvas" id="can1" class="Canvas" width="400" height="400"></canvas>
 
            
 
@@ -74,7 +74,7 @@
                 <div id="CanvasMods">
                     <div class="label">Canvas Mods</div>
                     <button id="Save" onclick="save()">Save</button>
-                    <button id="Clear" onclick="erase()">Clear</button>
+                    <button id="Clear" onclick="clear()">Clear</button>
                     <input type="file" name="Add Image" id="image" onclick="ImportImage()">
                    
                 </div>
